@@ -21,6 +21,7 @@ private:
 	bool _longOld;
 
 public:
+	Key(){}
 	Key(int p, String name):_ton(LONGPRESS){
 		_pin = p;
 		_name = name;

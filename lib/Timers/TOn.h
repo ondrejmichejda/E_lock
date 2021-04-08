@@ -14,6 +14,7 @@ private:
     int _actMs;
 
 public:
+    TOn(){}
 	TOn(int t){
         _time = t;
     };
