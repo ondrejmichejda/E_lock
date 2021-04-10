@@ -5,8 +5,26 @@
 
 class ServiceBase
 {
+private:
+	void StatusCheck(){
+		if(!Status){
+			Serial.println("disposed serivice");
+			Init();
+		}
+	}
+
+protected:
+	// Service status. True if ok.
+	bool Status;
+	virtual void Init();
+	virtual void Work();
+
 public:
-	virtual void Run();
+	void Run(){
+		Work();
+		StatusCheck();
+	}
+
 };
 
 #endif

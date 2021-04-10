@@ -21,11 +21,17 @@ private:
 	bool _longOld;
 
 public:
-	Key(){}
 	Key(int p, String name):_ton(LONGPRESS){
 		_pin = p;
 		_name = name;
 		pinMode(_pin, INPUT_PULLUP);
+
+		_click = false;
+		_clickOld = false;
+		_long = false;
+		_longOld = false;
+		Click = false;
+		Long = false;
 	}
 
 	void Monitor(){
@@ -53,8 +59,9 @@ public:
 		_clickOld = _click;	
 
 		// ton run code itself (must be after click condition)
-		_ton.Run();
+		_ton.Run();								
 	}
+
 	bool Click;
 	bool Long;
 };

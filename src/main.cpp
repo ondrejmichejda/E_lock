@@ -1,23 +1,20 @@
 #include "Arduino.h"
-#include "Key.h"
 #include "Time.h"
 #include "PulseGenerator.h"
 #include "TOn.h"
 #include "Display.h"
+#include "IOService.h"
 
 // Object declaration ->
-Key key1(5, "1");
-Key key2(4, "2");
-Key key3(7, "3");
-Key key4(6, "4");
 Display display(2, 3);
 Time time(18, 35, 1);
 PulseGenerator gen(600);
+
+IOService _ioService;
+
 // <-
 
-// Functions declaration ->
-void KeyMonitor();
-// <-
+
 
 // *************************************************************
 // *************************** SETUP ***************************
@@ -26,6 +23,9 @@ void setup()
 {
 	// Serial comm setup
 	Serial.begin(9600);
+
+	_ioService = IOService();
+	Serial.println("before run");
 }
 
 // *************************************************************
@@ -33,9 +33,10 @@ void setup()
 // *************************************************************
 void loop()
 {
-	KeyMonitor();
+	//Serial.println("before run");
+	_ioService.Run();
 
-	// time
+	/*// times
 	if(gen.On()){
 		time.Tick();
 	}
@@ -92,13 +93,5 @@ void loop()
 	display.EditMode = time.GetEditMode();
 	display.PwdMode = time.GetPwdMode();
 	display.Run();
+	*/
 }
-
-// Functions definition ->
-void KeyMonitor(){
-	key1.Monitor();
-	key2.Monitor();
-	key3.Monitor();
-	key4.Monitor();
-}
-// <-

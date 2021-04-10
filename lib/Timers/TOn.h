@@ -14,9 +14,11 @@ private:
     int _actMs;
 
 public:
-    TOn(){}
 	TOn(int t){
         _time = t;
+        In = false;
+        Out = false;
+        Elapsed = 0;
     };
     void Run(){
         _actMs = millis();
@@ -32,6 +34,7 @@ public:
         }
         _oldMs = _actMs;
     }
+
 	bool In;
     bool Out;
     int Elapsed;
