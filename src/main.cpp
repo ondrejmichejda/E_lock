@@ -23,9 +23,8 @@ void setup()
 {
 	// Serial comm setup
 	Serial.begin(9600);
-
 	_ioService = IOService();
-	Serial.println("before run");
+	_ioService.Setup("IOService");
 }
 
 // *************************************************************

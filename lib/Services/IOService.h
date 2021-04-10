@@ -13,14 +13,14 @@ public:
     Key Key3;
     Key Key4;
 
-    IOService() : Key1(5, "1"), Key2(4, "2"), Key3(7, "3"), Key4(6, "4"){
-        Init();
+    IOService() : ServiceBase(), Key1(5, "1"), Key2(4, "2"), Key3(7, "3"), Key4(6, "4"){
     }
 
 protected:
+
     void Init(){
         Status = true;
-        Serial.println("Initialized..");
+        Log("Initialized");
     }
 
     void Work(){
@@ -29,10 +29,9 @@ protected:
         Key3.Monitor();
         Key4.Monitor();
 
-        /*if(Key1.Click){
-            Serial.println("error...");
-            //Status = false;
-        }*/
+        if(Key1.Click){
+            Status = false;
+        }
     }
 };
 
