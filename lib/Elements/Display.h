@@ -14,44 +14,41 @@ class Display
 {
 private:
 	TM1637Display _display;
-	Time _time;
 	int _ms;
 	int _msOld;
 	int _msSum;
-	bool blink;
+	bool _blink;
 
 public:
 	Display(int pin1, int pin2):_display(pin1, pin2){
 		_display.setBrightness(1);
 		_display.clear();
+
+		_ms = 0;
+		_msOld = 0;
+		_msSum = 0;
+		_blink = false;
 	}
 	bool EditMode;
 	bool PwdMode;
 
 	void Update(Time time){
-		_time = time;
-		_display.showNumberDec(_time.getMinute(), true, 2, 2);
-		_display.showNumberDecEx(_time.getHour(), 0b01000000, true, 2, 0);	
-	}
-
-	void Update(){
-		_display.showNumberDec(_time.getMinute(), true, 2, 2);
-		_display.showNumberDecEx(_time.getHour(), 0b01000000, true, 2, 0);
-		
+		_display.showNumberDec(time.GetMinute(), true, 2, 2);
+		_display.showNumberDecEx(time.GetHour(), 0b01000000, true, 2, 0);	
 	}
 	
-	void Run(){
+	void Run(Time time){
 		_ms = millis();
 		if(EditMode){
 			_msSum += _ms - _msOld;
 			if(_msSum > BLINKTIME){
 				_msSum = 0;
-				if(blink)
+				if(_blink)
 					_display.clear();
 				else	
-					Update(_time);
+					Update(time);
 
-				blink = !blink;
+				_blink = !_blink;
 			}
 		}
 		else if(PwdMode){

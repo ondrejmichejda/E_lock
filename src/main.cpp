@@ -1,17 +1,11 @@
 #include "Arduino.h"
-#include "Time.h"
 #include "PulseGenerator.h"
-#include "TOn.h"
-#include "Display.h"
+#include "TimeService.h"
 #include "IOService.h"
 
-// Object declaration ->
-Display display(2, 3);
-Time time(18, 35, 1);
-PulseGenerator gen(600);
-
-IOService _ioService;
-
+// Services declaration ->
+TimeService _timeService;
+IOService _ioService(_timeService);
 // <-
 
 
@@ -23,7 +17,11 @@ void setup()
 {
 	// Serial comm setup
 	Serial.begin(9600);
-	_ioService = IOService();
+
+	_timeService = TimeService();
+	_timeService.Setup("TimeService");
+
+	_ioService = IOService(_timeService);
 	_ioService.Setup("IOService");
 }
 
@@ -32,7 +30,7 @@ void setup()
 // *************************************************************
 void loop()
 {
-	//Serial.println("before run");
+	_timeService.Run();
 	_ioService.Run();
 
 	/*// times

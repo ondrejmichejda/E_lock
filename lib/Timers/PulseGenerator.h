@@ -11,6 +11,9 @@ class PulseGenerator
 public:
 	PulseGenerator(long ms){
         _ms = ms;           
+        _time = 0;
+        _millisOld = 0;
+        _millis = 0;
     }
     bool On(){
         _millis = millis();

@@ -4,6 +4,7 @@
 #include "Arduino.h"
 #include "ServiceBase.h"
 #include "Key.h"
+#include "Display.h"
 
 class IOService : public ServiceBase
 {
@@ -12,12 +13,19 @@ public:
     Key Key2;
     Key Key3;
     Key Key4;
+    Display Display1;
 
-    IOService() : ServiceBase(), Key1(5, "1"), Key2(4, "2"), Key3(7, "3"), Key4(6, "4"){
+    IOService(TimeService timeService) : Key1(5, "1"), 
+                    Key2(4, "2"), 
+                    Key3(7, "3"), 
+                    Key4(6, "4"),
+                    Display1(2, 3){
+        _timeService = timeService;
     }
 
-protected:
-
+private:
+    TimeService _timeService;
+    
     void Init(){
         Status = true;
         Log("Initialized");
@@ -29,9 +37,8 @@ protected:
         Key3.Monitor();
         Key4.Monitor();
 
-        if(Key1.Click){
-            Status = false;
-        }
+        Display1.Run(_timeService.Time1);
+
     }
 };
 

@@ -36,6 +36,10 @@ public:
 	Time(long startTime, double multiplier){
 		_multiplier = (multiplier <= 0) ? 1 : multiplier;
 		_tickCtr = startTime * _multiplier;
+
+		_minOld = 0;
+		_editMode = false;
+		_pwdMode = false;
 	}
 
 	// Contructor to create hour and minute time.
@@ -55,7 +59,7 @@ public:
 	/* Checks whether minute value has been changed.
 	Returns true if changed.*/
 	bool Changed(){
-		int min = getMinute();
+		int min = GetMinute();
 		if(_minOld != min){
 			_minOld = min;
 			return true;
@@ -64,19 +68,19 @@ public:
 	}
 
 	// Get hour value.
-	int getHour(){
+	int GetHour(){
 		_time = _timeCalc(_tickCtr);
 		return _time / 60;
 	}
 
 	// Get minute value.
-	int getMinute(){
+	int GetMinute(){
 		_time = _timeCalc(_tickCtr);
 		return _time % 60;
 	}
 
 	// Get total minutes.
-	int getTotalMin(){
+	int GetTotalMin(){
 		_time = _timeCalc(_tickCtr);
 		return _time;
 	}
