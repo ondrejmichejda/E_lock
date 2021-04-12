@@ -1,9 +1,10 @@
 #include "Arduino.h"
 #include "PulseGenerator.h"
-#include "TimeService.h"
 #include "IOService.h"
+#include "TimeService.h"
 
 // Services declaration ->
+
 TimeService _timeService;
 IOService _ioService(_timeService);
 // <-
@@ -30,9 +31,9 @@ void setup()
 // *************************************************************
 void loop()
 {
-	_timeService.Run();
 	_ioService.Run();
-
+	_timeService.Run();
+	
 	/*// times
 	if(gen.On()){
 		time.Tick();

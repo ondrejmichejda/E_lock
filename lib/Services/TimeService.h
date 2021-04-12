@@ -12,7 +12,7 @@ public:
     Time Time1;
 
     TimeService() : Time1(9, 41, 1), 
-                    Generator(6000){
+                    Generator(600){
     }
 
 private:
@@ -26,7 +26,7 @@ private:
     void Work(){
         if(Generator.On()){
             Time1.Tick();
-            Log(String(Time1.GetTotalMin()));
+            Log(String(Time1.GetHour()) + ":" + Time1.GetMinute());
         }
     }
 };

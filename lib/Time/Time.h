@@ -4,6 +4,8 @@
 #ifndef Time_h
 #define Time_h
 
+#define MAX_TIME 1439
+
 #include "Arduino.h"
 
 class Time
@@ -14,21 +16,18 @@ private:
 	int _time;
 	int _tickCtr;
 	int _minOld;
-	bool _editMode;
-	bool _pwdMode;
+	bool _pause;
 
 	// Calculate total minutes from ticks.
 	int _timeCalc(int ticks){
-		return floor(_overflowCheck(ticks) / _multiplier);
+		return floor(ticks / _multiplier);
 	}
 
 	// Verify and reset if overflows.
-	int _overflowCheck(int ticks){
-		int result = 0;
-		if(ticks < 1440 * _multiplier){
-			result = ticks;
+	void _overflowCheck(){
+		if(_tickCtr > (MAX_TIME * _multiplier)){
+			_tickCtr = 0;
 		}
-		return result;
 	}
 
 public:
@@ -36,10 +35,8 @@ public:
 	Time(long startTime, double multiplier){
 		_multiplier = (multiplier <= 0) ? 1 : multiplier;
 		_tickCtr = startTime * _multiplier;
-
 		_minOld = 0;
-		_editMode = false;
-		_pwdMode = false;
+		_pause = false;
 	}
 
 	// Contructor to create hour and minute time.
@@ -47,14 +44,21 @@ public:
 
 	// Call to change minute value.
 	void Tick(){
-		if(!_editMode){
+		if(!_pause)
 			_tickCtr++;
-			_time = _timeCalc(_tickCtr);
-		}
+		_overflowCheck();
+		_time = _timeCalc(_tickCtr);
 	}
 
-	// Empty constructor
-	Time() : Time(0, 1){}
+	// Pause time.
+	void Pause(){
+		_pause = true;
+	}
+
+	// Re-start time.
+	void Play(){
+		_pause = false;
+	}
 
 	/* Checks whether minute value has been changed.
 	Returns true if changed.*/
@@ -85,34 +89,9 @@ public:
 		return _time;
 	}
 
-	// Set or reset edit mode.
-	void SetEditMode(bool val){
-		_editMode = val;
-		if(_editMode)
-			SetPwdMode(false);
-				
-		Serial.println("EditMode = " + String(_editMode));
-	}
-
-	// Set or reset password mode.
-	void SetPwdMode(bool val){
-		_pwdMode = val;
-		Serial.println("PwdMode = " + String(_pwdMode));
-	}
-
-	// Get edit mode status.
-	bool GetEditMode(){
-		return _editMode;
-	}
-
-	// Get password mode status.
-	bool GetPwdMode(){
-		return _pwdMode;
-	}
-
 	// Modify time by 1 for desired scale (hour, minute).
 	void Modify(bool hour, bool dir){
-		if(!_editMode) return;
+		if(!_pause) return;
 		
 		if(hour){
 			// modify hour
