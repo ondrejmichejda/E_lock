@@ -15,8 +15,9 @@ public:
     Key Key3;
     Key Key4;
     Display Display1;
+    TimeService _timeService;
 
-    IOService(TimeService timeService) : Key1(5, "1"), 
+    IOService(TimeService &timeService) : Key1(5, "1"), 
                     Key2(4, "2"), 
                     Key3(7, "3"), 
                     Key4(6, "4"),
@@ -25,7 +26,6 @@ public:
     }
 
 private:
-    TimeService _timeService;
     
     void Init(){
         Status = true;
@@ -40,6 +40,11 @@ private:
 
         Display1.Run(_timeService.Time1);
 
+        //Serial.println(_timeService.Time1.GetTotalMin());
+
+        if(_timeService.Time1.Changed()){
+            Display1.Update(_timeService.Time1);
+        }
     }
 };
 

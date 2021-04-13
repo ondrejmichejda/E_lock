@@ -64,6 +64,7 @@ public:
 	Returns true if changed.*/
 	bool Changed(){
 		int min = GetMinute();
+		//Serial.println(min);
 		if(_minOld != min){
 			_minOld = min;
 			return true;

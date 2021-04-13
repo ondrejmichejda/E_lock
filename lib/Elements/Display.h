@@ -38,7 +38,7 @@ public:
 	}
 	
 	void Run(Time time){
-		_ms = millis();
+		/*_ms = millis();
 		if(EditMode){
 			_msSum += _ms - _msOld;
 			if(_msSum > BLINKTIME){
@@ -57,7 +57,7 @@ public:
 		else{
 			_msSum = 0;
 		}
-		_msOld = _ms;
+		_msOld = _ms;*/
 	}
 };
 

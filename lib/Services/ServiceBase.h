@@ -6,9 +6,6 @@
 class ServiceBase 
 {
 private:
-	// Name of service.
-	char Name[20];
-
 	void StatusCheck(){
 		if(!Status){
 			Log("Service Failed");
@@ -32,6 +29,8 @@ protected:
 	}
 
 public:
+	// Name of service.
+	char Name[20];
 	// Main task run in loop.
 	void Run(){
 		Work();

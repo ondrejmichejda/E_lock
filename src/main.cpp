@@ -31,9 +31,11 @@ void setup()
 // *************************************************************
 void loop()
 {
-	_ioService.Run();
 	_timeService.Run();
-	
+	_ioService.Run();
+
+	Serial.println(_ioService._timeService.Time1.GetTotalMin());
+
 	/*// times
 	if(gen.On()){
 		time.Tick();

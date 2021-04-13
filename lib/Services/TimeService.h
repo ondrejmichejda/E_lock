@@ -26,7 +26,7 @@ private:
     void Work(){
         if(Generator.On()){
             Time1.Tick();
-            Log(String(Time1.GetHour()) + ":" + Time1.GetMinute());
+            //Log(String(Time1.GetHour()) + ":" + Time1.GetMinute());
         }
     }
 };
