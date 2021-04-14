@@ -16,9 +16,11 @@ void setup()
 	// Serial comm setup
 	Serial.begin(9600);
 
+	// IOService
 	ioService = new IOService();
 	ioService->Setup("IO Service");
 
+	// TimeService
 	timeService = new TimeService(ioService);
 	timeService->Setup("Time Service");
 }
@@ -30,10 +32,4 @@ void loop()
 {
 	ioService->Run();
 	timeService->Run();
-
-	// test comment from work laptop
-	if(timeService->ioService->Key1->Click){
-		Serial.println("click from time service");
-	}
-	
 }

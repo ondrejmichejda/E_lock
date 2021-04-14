@@ -9,6 +9,7 @@
 #include "Arduino.h"
 #include "TOn.h"
 
+//! Class to cover button functionality.
 class Key
 {
 private:
@@ -21,22 +22,34 @@ private:
 	bool _longOld;
 
 public:
-	Key(int p, String name){
-		_pin = p;
+	//! Button clicked (on release)
+	bool Click;
+
+	//! Button hold more then LONGPRESS = 3000
+	bool Long;
+
+	//! Initializes button object.
+	//! @param pin Used pin for this button.
+	//! @param name Name of this button.
+	//!
+	Key(int pin, String name){
+		_pin = pin;
 		_name = name;
 		pinMode(_pin, INPUT_PULLUP);
 
 		// init variables
+		Click = false;
+		Long = false;
+
 		_ton = new TOn(LONGPRESS);
 		_click = false;
 		_clickOld = false;
 		_long = false;
 		_longOld = false;
-		Click = false;
-		Long = false;
 	}
 
-	void Monitor(){
+	//! Monitoring function to catch up button presses.
+	void Run(){
 		_click = digitalRead(_pin) == LOW;
 
 		// setup ton input
@@ -63,9 +76,6 @@ public:
 		// ton run code itself (must be after click condition)
 		_ton->Run();								
 	}
-
-	bool Click;
-	bool Long;
 };
 
 #endif

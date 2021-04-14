@@ -6,6 +6,7 @@
 
 #include "Arduino.h"
 
+//! Timer On class.
 class TOn
 {
 private:
@@ -14,12 +15,27 @@ private:
     int _actMs;
 
 public:
+    //! Input.
+	bool In;
+
+    //! Output - is true after preset time if Input is TRUE.
+    bool Out;
+
+    //! Elapsed time till output is activated.
+    int Elapsed;
+
+    //! Initialize timer on class.
+    //! @param t Preset time after which Out is set.
 	TOn(int t){
         _time = t;
+
+        // parameter init
         In = false;
         Out = false;
         Elapsed = 0;
     };
+
+    //! Main function for object functionality (must be called).
     void Run(){
         _actMs = millis();
         if(In)
@@ -34,10 +50,6 @@ public:
         }
         _oldMs = _actMs;
     }
-
-	bool In;
-    bool Out;
-    int Elapsed;
 };
 
 #endif

@@ -2,40 +2,47 @@
 #define TimeService_h
 
 #include "Arduino.h"
-#include "ServiceBase.h"
+#include "BaseService.h"
 #include "Time.h"
 #include "PulseGenerator.h"
 #include "IOService.h"
 
 #define FREQ 600
 
-
-class TimeService : public ServiceBase
+//! Class covering Time services.
+class TimeService : public BaseService
 {
-public:
-    IOService* ioService = NULL;
-    Time* TimeAct = NULL;
-
-    TimeService(IOService* ioservice){
-        ioService = ioservice;
-    }
-
 private:
     PulseGenerator* Generator = NULL;
 
-    void Init(){
+    //! Initialization.
+    void _init(){
         Generator = new PulseGenerator(FREQ);
         TimeAct = new Time(12, 23, 1);
 
-        Status = true;
-        Log("Initialized");
+        _status = true;
+        _log("Initialized");
     }
 
-    void Work(){
+    //! Work to be done.
+    void _work(){
         if(Generator->On()){
             TimeAct->Tick();
-            //Log(String(TimeAct->GetHour()) + ":" + TimeAct->GetMinute());
         }
+    }
+
+public:
+    //! Reference to IO Service
+    IOService* ioService = NULL;
+
+    //! Time object.
+    Time* TimeAct = NULL;
+
+    //! Initializes TimeService
+    //! @param ioservice The IOService reference.
+    //!
+    TimeService(IOService* ioservice){
+        ioService = ioservice;
     }
 };
 

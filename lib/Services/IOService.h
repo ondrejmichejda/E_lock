@@ -2,39 +2,47 @@
 #define IOService_h
 
 #include "Arduino.h"
-#include "ServiceBase.h"
+#include "BaseService.h"
 #include "Key.h"
 #include "Display.h"
 
-class IOService : public ServiceBase
+//! Class covering all IO periferies and it's functionalities.
+class IOService : public BaseService
 {
-public:
-    Key* Key1 = NULL;
-    Key* Key2 = NULL;
-    Key* Key3 = NULL;
-    Key* Key4 = NULL;
-    Display Display1;
-
-    IOService() : Display1(2, 3){}
-
 private:
-    
-    void Init(){
+    //! Initialization.
+    void _init(){
         Key1 = new Key(5, "1");
         Key2 = new Key(4, "2");
         Key3 = new Key(7, "3");
         Key4 = new Key(6, "4");
 
-        Status = true;
-        Log("Initialized");
+        Display1 = new Display(2, 3);
+
+        _status = true;
+        _log("Initialized");
     }
 
-    void Work(){
-        Key1->Monitor();
-        Key2->Monitor();
-        Key3->Monitor();
-        Key4->Monitor();
+    //! Work to be done.
+    void _work(){
+        Key1->Run();
+        Key2->Run();
+        Key3->Run();
+        Key4->Run();
     }
+
+public:
+    //! Keys definitions
+    Key* Key1 = NULL;
+    Key* Key2 = NULL;
+    Key* Key3 = NULL;
+    Key* Key4 = NULL;
+
+    //! Display definition
+    Display* Display1;
+
+    //! Initializes IOService.
+    IOService(){}
 };
 
 #endif
