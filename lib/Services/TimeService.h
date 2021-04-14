@@ -5,6 +5,7 @@
 #include "ServiceBase.h"
 #include "Time.h"
 #include "PulseGenerator.h"
+#include "IOService.h"
 
 #define FREQ 600
 
@@ -12,9 +13,12 @@
 class TimeService : public ServiceBase
 {
 public:
+    IOService* ioService = NULL;
     Time* TimeAct = NULL;
 
-    TimeService(){}
+    TimeService(IOService* ioservice){
+        ioService = ioservice;
+    }
 
 private:
     PulseGenerator* Generator = NULL;
@@ -30,7 +34,7 @@ private:
     void Work(){
         if(Generator->On()){
             TimeAct->Tick();
-            Log(String(TimeAct->GetHour()) + ":" + TimeAct->GetMinute());
+            //Log(String(TimeAct->GetHour()) + ":" + TimeAct->GetMinute());
         }
     }
 };
