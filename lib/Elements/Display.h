@@ -36,29 +36,6 @@ public:
 		_display.showNumberDec(time.GetMinute(), true, 2, 2);
 		_display.showNumberDecEx(time.GetHour(), 0b01000000, true, 2, 0);	
 	}
-	
-	void Run(Time time){
-		/*_ms = millis();
-		if(EditMode){
-			_msSum += _ms - _msOld;
-			if(_msSum > BLINKTIME){
-				_msSum = 0;
-				if(_blink)
-					_display.clear();
-				else	
-					Update(time);
-
-				_blink = !_blink;
-			}
-		}
-		else if(PwdMode){
-			_display.clear();
-		}
-		else{
-			_msSum = 0;
-		}
-		_msOld = _ms;*/
-	}
 };
 
 #endif

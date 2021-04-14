@@ -29,19 +29,21 @@ protected:
 	}
 
 public:
+
 	// Name of service.
 	char Name[20];
+
 	// Main task run in loop.
 	void Run(){
 		Work();
 		StatusCheck();
 	}
 
-	// Fake constructor.
-	void Setup(String n){
-		n.toCharArray(Name, 20);
+	void Setup(String name){
+		name.toCharArray(Name, 20);
 		Init();
 	}
+
 };
 
 #endif

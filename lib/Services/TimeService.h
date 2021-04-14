@@ -6,27 +6,31 @@
 #include "Time.h"
 #include "PulseGenerator.h"
 
+#define FREQ 600
+
+
 class TimeService : public ServiceBase
 {
 public:
-    Time Time1;
+    Time* TimeAct = NULL;
 
-    TimeService() : Time1(9, 41, 1), 
-                    Generator(600){
-    }
+    TimeService(){}
 
 private:
-    PulseGenerator Generator;
+    PulseGenerator* Generator = NULL;
 
     void Init(){
+        Generator = new PulseGenerator(FREQ);
+        TimeAct = new Time(12, 23, 1);
+
         Status = true;
         Log("Initialized");
     }
 
     void Work(){
-        if(Generator.On()){
-            Time1.Tick();
-            //Log(String(Time1.GetHour()) + ":" + Time1.GetMinute());
+        if(Generator->On()){
+            TimeAct->Tick();
+            Log(String(TimeAct->GetHour()) + ":" + TimeAct->GetMinute());
         }
     }
 };

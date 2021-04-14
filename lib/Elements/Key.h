@@ -14,18 +14,20 @@ class Key
 private:
 	int _pin;
 	String _name;
-	TOn _ton;
+	TOn* _ton = NULL;
 	bool _click;
 	bool _clickOld;
 	bool _long;
 	bool _longOld;
 
 public:
-	Key(int p, String name):_ton(LONGPRESS){
+	Key(int p, String name){
 		_pin = p;
 		_name = name;
 		pinMode(_pin, INPUT_PULLUP);
 
+		// init variables
+		_ton = new TOn(LONGPRESS);
 		_click = false;
 		_clickOld = false;
 		_long = false;
@@ -38,8 +40,8 @@ public:
 		_click = digitalRead(_pin) == LOW;
 
 		// setup ton input
-		_ton.In = _click;
-		_long = _ton.Out;	
+		_ton->In = _click;
+		_long = _ton->Out;	
 
 		// reset public flags
 		Long = false;
@@ -51,7 +53,7 @@ public:
 			Serial.println("Key " + _name + " long");
 		}
 		// click if no ton.out active in this cycle (to prevent click flag on release of long hold)
-		else if (!_click && _clickOld && !_ton.Out){
+		else if (!_click && _clickOld && !_ton->Out){
 			Click = true;
 			Serial.println("Key " + _name + " click");
 		}
@@ -59,7 +61,7 @@ public:
 		_clickOld = _click;	
 
 		// ton run code itself (must be after click condition)
-		_ton.Run();								
+		_ton->Run();								
 	}
 
 	bool Click;

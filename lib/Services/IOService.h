@@ -10,41 +10,31 @@
 class IOService : public ServiceBase
 {
 public:
-    Key Key1;
-    Key Key2;
-    Key Key3;
-    Key Key4;
+    Key* Key1 = NULL;
+    Key* Key2 = NULL;
+    Key* Key3 = NULL;
+    Key* Key4 = NULL;
     Display Display1;
-    TimeService _timeService;
 
-    IOService(TimeService &timeService) : Key1(5, "1"), 
-                    Key2(4, "2"), 
-                    Key3(7, "3"), 
-                    Key4(6, "4"),
-                    Display1(2, 3){
-        _timeService = timeService;
-    }
+    IOService() : Display1(2, 3){}
 
 private:
     
     void Init(){
+        Key1 = new Key(5, "1");
+        Key2 = new Key(4, "2");
+        Key3 = new Key(7, "3");
+        Key4 = new Key(6, "4");
+
         Status = true;
         Log("Initialized");
     }
 
     void Work(){
-        Key1.Monitor();
-        Key2.Monitor();
-        Key3.Monitor();
-        Key4.Monitor();
-
-        Display1.Run(_timeService.Time1);
-
-        //Serial.println(_timeService.Time1.GetTotalMin());
-
-        if(_timeService.Time1.Changed()){
-            Display1.Update(_timeService.Time1);
-        }
+        Key1->Monitor();
+        Key2->Monitor();
+        Key3->Monitor();
+        Key4->Monitor();
     }
 };
 
