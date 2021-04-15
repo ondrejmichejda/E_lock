@@ -21,8 +21,7 @@ private:
         Generator = new PulseGenerator(FREQ);
         TimeAct = new Time(12, 23, 1);
 
-        _status = true;
-        Logger::Log(TimeAct, this, "Init");
+        Logger::Log(TimeAct, this, Texts::Init);
     }
 
     //! Work to be done.
@@ -45,6 +44,9 @@ public:
     //!
     TimeService(){}
 
+    //! Get Name
+    //! @return Name of this loggable object.
+    //!
     String GetLogName(){
         return Name;
     }

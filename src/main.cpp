@@ -11,8 +11,8 @@ IOService* ioService = NULL;
 // *************************************************************
 void setup()
 {   
-    // Logger init
-    Logger::Setup();
+    // Static classes init
+    Logger::Setup(9600);
 
     // TimeService
 	timeService = new TimeService();

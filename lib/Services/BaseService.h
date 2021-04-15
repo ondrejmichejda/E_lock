@@ -6,22 +6,25 @@
 #define BaseService_h
 
 #include "Arduino.h"
+#include "Texts.h"
 
 class BaseService
 {
 private:
+    //! Service status. True if ok.
+	bool _status;
+
 	//! Status check function. If status bad, then restart service.
 	void _statusCheck(){
 		if(!_status){
 			_failed();
 			_init();
+            _status = true;
 		}
 	}
 
 protected:
-	//! Service status. True if ok.
-	bool _status;
-
+	
 	//! Initialization of all obects, call after fail.
 	virtual void _init();
 
@@ -49,6 +52,19 @@ public:
 		name.toCharArray(Name, 20);
 		_init();
 	}
+
+    //! Returns status of this service.
+    //! @return Status of this service.
+    //!
+    bool GetStatus(){
+        return _status;
+    }
+
+    // Set status bad.
+    //
+    void SetStatusBad(){
+        _status = false;
+    }
 
 };
 

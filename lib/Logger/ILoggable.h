@@ -9,7 +9,8 @@
 
 class ILoggable{
 public:
-    // Must be overriden in child class.
+    //! Must be overriden in child class.
+    //! @return Name of this loggable object.
     virtual String GetLogName();
 };
 

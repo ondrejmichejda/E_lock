@@ -4,17 +4,18 @@
 #ifndef Key_h
 #define Key_h
 
-#define LONGPRESS 3000
+#define LONGPRESS 2000
 
 #include "Arduino.h"
 #include "TOn.h"
+#include "ILoggable.h"
+#include "Logger.h"
 
 //! Class to cover button functionality.
-class Key
+class Key : public ILoggable
 {
 private:
 	int _pin;
-	String _name;
 	TOn* _ton = NULL;
 	bool _click;
 	bool _clickOld;
@@ -28,13 +29,15 @@ public:
 	//! Button hold more then LONGPRESS = 3000
 	bool Long;
 
+    String Name;
+
 	//! Initializes button object.
 	//! @param pin Used pin for this button.
 	//! @param name Name of this button.
 	//!
 	Key(int pin, String name){
 		_pin = pin;
-		_name = name;
+		Name = name;
 		pinMode(_pin, INPUT_PULLUP);
 
 		// init variables
@@ -63,12 +66,12 @@ public:
 		// long pressed first priority
 		if(_long && !_longOld){
 			Long = true;
-			Serial.println("Key " + _name + " long");
+			Logger::Log(this, Name, Texts::Hold);
 		}
 		// click if no ton.out active in this cycle (to prevent click flag on release of long hold)
 		else if (!_click && _clickOld && !_ton->Out){
 			Click = true;
-			Serial.println("Key " + _name + " click");
+			Logger::Log(this, Name, Texts::Click);
 		}
 		_longOld = _long;
 		_clickOld = _click;	
@@ -76,6 +79,10 @@ public:
 		// ton run code itself (must be after click condition)
 		_ton->Run();								
 	}
+
+    String GetLogName(){
+        return "Button";
+    }
 };
 
 #endif
