@@ -1,28 +1,26 @@
-#include "Arduino.h"
-#include "PulseGenerator.h"
 #include "IOService.h"
 #include "TimeService.h"
 
 // Services declaration ->
-IOService* ioService = NULL;
 TimeService* timeService = NULL;
+IOService* ioService = NULL;
 // <-
 
 // *************************************************************
 // *************************** SETUP ***************************
 // *************************************************************
 void setup()
-{
-	// Serial comm setup
-	Serial.begin(9600);
+{   
+    // Logger init
+    Logger::Setup();
+
+    // TimeService
+	timeService = new TimeService();
+	timeService->Setup("Time Service");
 
 	// IOService
 	ioService = new IOService();
 	ioService->Setup("IO Service");
-
-	// TimeService
-	timeService = new TimeService(ioService);
-	timeService->Setup("Time Service");
 }
 
 // *************************************************************
@@ -30,6 +28,6 @@ void setup()
 // *************************************************************
 void loop()
 {
+    timeService->Run();
 	ioService->Run();
-	timeService->Run();
 }

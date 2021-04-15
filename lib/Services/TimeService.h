@@ -3,14 +3,15 @@
 
 #include "Arduino.h"
 #include "BaseService.h"
+#include "ILoggable.h"
+#include "Logger.h"
 #include "Time.h"
 #include "PulseGenerator.h"
-#include "IOService.h"
 
 #define FREQ 600
 
 //! Class covering Time services.
-class TimeService : public BaseService
+class TimeService : public BaseService, public ILoggable
 {
 private:
     PulseGenerator* Generator = NULL;
@@ -21,7 +22,7 @@ private:
         TimeAct = new Time(12, 23, 1);
 
         _status = true;
-        _log("Initialized");
+        Logger::Log(TimeAct, this, "Init");
     }
 
     //! Work to be done.
@@ -31,18 +32,21 @@ private:
         }
     }
 
-public:
-    //! Reference to IO Service
-    IOService* ioService = NULL;
+    void _failed(){
+        //log
+    }
 
+public:
     //! Time object.
     Time* TimeAct = NULL;
 
     //! Initializes TimeService
     //! @param ioservice The IOService reference.
     //!
-    TimeService(IOService* ioservice){
-        ioService = ioservice;
+    TimeService(){}
+
+    String GetLogName(){
+        return Name;
     }
 };
 

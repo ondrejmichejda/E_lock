@@ -20,7 +20,7 @@ private:
         Display1 = new Display(2, 3);
 
         _status = true;
-        _log("Initialized");
+        //_logService->Log(*this, "Initialized");
     }
 
     //! Work to be done.
@@ -29,6 +29,11 @@ private:
         Key2->Run();
         Key3->Run();
         Key4->Run();
+    }
+
+    //! Failed.
+    void _failed(){
+        //log
     }
 
 public:

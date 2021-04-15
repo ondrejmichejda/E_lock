@@ -1,15 +1,19 @@
+/*
+  BaseService.h - Base abstract class for services.
+*/
+
 #ifndef BaseService_h
 #define BaseService_h
 
 #include "Arduino.h"
 
-class BaseService 
+class BaseService
 {
 private:
 	//! Status check function. If status bad, then restart service.
 	void _statusCheck(){
 		if(!_status){
-			_log("Service Failed");
+			_failed();
 			_init();
 		}
 	}
@@ -24,12 +28,8 @@ protected:
 	//! Do the work.	
 	virtual void _work();
 
-	//! Log message to serial port.
-	//! @param log Message to be logged.
-	//!
-	void _log(String log){
-		Serial.println("Service '" + String(Name) + "' -> " + String(log));
-	}
+	//! Failed. What to do when service fails.
+	virtual void _failed();
 
 public:
 
