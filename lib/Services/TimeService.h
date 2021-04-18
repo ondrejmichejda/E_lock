@@ -19,7 +19,7 @@ private:
     //! Initialization.
     void _init(){
         Generator = new PulseGenerator(FREQ);
-        TimeAct = new Time(12, 23, 1);
+        TimeAct = new Time(0, 0, 1);
 
         Logger::Log(TimeAct, this, Texts::Init);
     }
@@ -28,7 +28,9 @@ private:
     void _work(){
         if(Generator->On()){
             TimeAct->Tick();
+            // Logger::Log(TimeAct, this, "");
         }
+
     }
 
     void _failed(){
@@ -36,8 +38,11 @@ private:
     }
 
 public:
-    //! Time object.
+    // Actual Time object.
     Time* TimeAct = NULL;
+
+    // Editable Time object.
+    Time* TimeEdit = NULL;
 
     //! Initializes TimeService
     //! @param ioservice The IOService reference.
@@ -49,6 +54,16 @@ public:
     //!
     String GetLogName(){
         return Name;
+    }
+
+    // Store copy of actual time in edit time
+    void SetTimeEdit(){
+        TimeEdit = new Time(TimeAct->GetTimeInt(), 1);
+    }
+
+    // Overrides act time with edit time
+    void SetTimeAct(){
+        TimeAct = new Time(TimeEdit->GetTimeInt(), 1);
     }
 };
 

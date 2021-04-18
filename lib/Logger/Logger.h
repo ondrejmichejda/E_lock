@@ -19,6 +19,7 @@ public:
 
     static void Log(Time* time, ILoggable* object, String msg1, String msg2 = "", String msg3 = "", String msg4 = "", String msg5 = ""){
         String timeStr = (time == NULL) ? "null" : time->GetTimeStr();
+
         String objectStr = (object == NULL) ? "null" : object->GetLogName();
 
         Serial.println(timeStr + " - " + objectStr + " : " + msg1 + " " + msg2 + " " + msg3 + " " + msg4 + " " + msg5);

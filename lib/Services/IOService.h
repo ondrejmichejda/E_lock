@@ -3,6 +3,7 @@
 
 #include "Arduino.h"
 #include "BaseService.h"
+#include "TimeService.h"
 #include "Logger.h"
 #include "Key.h"
 #include "Display.h"
@@ -14,25 +15,26 @@ class IOService : public BaseService, public ILoggable
 {
 private:
     Key* _keys[NUMBER_OF_KEYS];
+    TimeService* _timeService = NULL;
 
     //! Initialization.
     void _init(){
-        Key1 = new Key(5, "1");
+        Key1 = new Key(5, "1", _timeService);
         _keys[0] = Key1;
 
-        Key2 = new Key(4, "2");
+        Key2 = new Key(4, "2", _timeService);
         _keys[1] = Key2;
 
-        Key3 = new Key(7, "3");
+        Key3 = new Key(7, "3", _timeService);
         _keys[2] = Key3;
 
-        Key4 = new Key(6, "4");
+        Key4 = new Key(6, "4", _timeService);
         _keys[3] = Key4;
         
 
         Display1 = new Display(2, 3);
 
-        Logger::Log(NULL, this, Texts::Init);
+        Logger::Log(_timeService->TimeAct, this, Texts::Init);
     }
 
     //! Work to be done.
@@ -45,7 +47,7 @@ private:
 
     //! Failed.
     void _failed(){
-        Logger::Log(NULL, this, Texts::Fail);
+        Logger::Log(_timeService->TimeAct, this, Texts::Fail);
     }
 
 public:
@@ -59,7 +61,11 @@ public:
     Display* Display1;
 
     //! Initializes IOService.
-    IOService(){}
+    //! @param timeService Reference to TimeService.
+    //!
+    IOService(TimeService* timeService){
+        _timeService = timeService;
+    }
 
     String GetLogName(){
         return Name;

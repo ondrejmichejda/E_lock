@@ -10,7 +10,7 @@
 class TOn
 {
 private:
-    int _time;
+    long _time;
     int _oldMs;
     int _actMs;
 
@@ -26,7 +26,7 @@ public:
 
     //! Initialize timer on class.
     //! @param t Preset time after which Out is set.
-	TOn(int t){
+	TOn(long t){
         _time = t;
 
         // parameter init
@@ -49,6 +49,13 @@ public:
             Elapsed = 0;
         }
         _oldMs = _actMs;
+    }
+
+    // Reinitializes all inputs and outputs.
+    void ReInit(){
+        In = false;
+        Out = false;
+        Elapsed = 0;
     }
 };
 

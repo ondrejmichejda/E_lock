@@ -55,29 +55,18 @@ public:
 
 	//! Call to change minute value. Calculating with multiplier.
 	void Tick(){
-		if(!_pause)
-			_tickCtr++;
+		_tickCtr++;
 		_overflowCheck();
 		_time = _timeCalc(_tickCtr);
 	}
 
-	//! Pause time.
-	void Pause(){
-		_pause = true;
-	}
-
-	//! Re-start time.
-	void Play(){
-		_pause = false;
-	}
-
-	//! Checks whether minute value has been changed.
-	//! @return TRUE if minute has changed.
+	//! Checks whether total value has been changed.
+	//! @return TRUE if time has changed.
 	//!
 	bool Changed(){
-		int min = GetMinute();
-		if(_minOld != min){
-			_minOld = min;
+		int totalMin = GetTimeInt();
+		if(_minOld != totalMin){
+			_minOld = totalMin;
 			return true;
 		}
 		return false;	
@@ -109,7 +98,9 @@ public:
 	//! @return Time as HH:mm
 	//!
 	String GetTimeStr(){
-		return String(GetHour()) + ":" + String(GetMinute());
+        String hour = (GetHour() < 10) ? "0" + String(GetHour()) : String(GetHour());
+        String min = (GetMinute() < 10) ? "0" + String(GetMinute()) : String(GetMinute());
+		return hour + ":" + min;
 	}
 
 	//! Modify time by 1 for desired scale (hour, minute).
@@ -117,7 +108,6 @@ public:
 	//! @param dir TRUE to increase, FALSE to decrease.
 	//!
 	void Modify(bool hour, bool dir){
-		if(!_pause) return;
 		
 		if(hour){
 			// modify hour

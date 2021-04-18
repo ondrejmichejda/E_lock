@@ -10,6 +10,21 @@
 #include "TM1637Display.h"
 #include "Time.h"
 
+// Segments
+//   -      A
+// |   |  F   B
+//   -      G
+// |   |  E   C
+//   -      D
+//
+
+const uint8_t PWD_MODE[] = {
+  SEG_B | SEG_C | SEG_G,  
+  SEG_E | SEG_F | SEG_G,           
+  SEG_B | SEG_C | SEG_G,
+  SEG_E | SEG_F | SEG_G                   
+  };
+
 //! Wrapping class for TM1637 display.
 class Display
 {
@@ -39,10 +54,21 @@ public:
 	//! Show time value on this display.
 	//! @param time The time object displayed on this display.
 	//!
-	void ShowTime(Time time){
-		_display->showNumberDec(time.GetMinute(), true, 2, 2);
-		_display->showNumberDecEx(time.GetHour(), 0b01000000, true, 2, 0);	
+	void ShowTime(Time* time){
+		_display->showNumberDec(time->GetMinute(), true, 2, 2);
+		_display->showNumberDecEx(time->GetHour(), 0b01000000, true, 2, 0);	
 	}
+
+    // Shut off display.
+    void TurnOff(){
+        _display->clear();
+    }
+
+    // Show password symbols
+    void ShowPwdMode(){
+        TurnOff();
+        _display->setSegments(PWD_MODE);
+    }
 };
 
 #endif
