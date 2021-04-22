@@ -6,9 +6,9 @@
 
 #define MAX_TIME 1439
 
-#include "Arduino.h"
+#include "ITime.h"
 
-class Time
+class Time : public ITime
 {
 private:
 	// 1 / ticks per minute

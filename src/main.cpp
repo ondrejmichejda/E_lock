@@ -1,9 +1,9 @@
+#include <SoftwareSerial.h> 
 #include "IOService.h"
 #include "TimeService.h"
 #include "SetupService.h"
 
-//#include "SoftwareSerial.h"     //+
-//SoftwareSerial RFID(8, 0);      //+
+SoftwareSerial RFID(8, 0);      //+
 
 // Services declaration ->
 TimeService* timeService = NULL;
@@ -16,7 +16,7 @@ SetupService* setupService = NULL;
 // *************************************************************
 void setup()
 {   
-    //RFID.begin(9600);       
+    RFID.begin(9600);       
 
     // Static classes init
     Logger::Setup(9600);
@@ -32,6 +32,8 @@ void setup()
     // Setup Service
     setupService = new SetupService(timeService, ioService);
     setupService->Setup("Setup Service");
+
+    Logger::Log(timeService->TimeAct, NULL, "E Lock on Arduino started");
 }
 
 // *************************************************************
@@ -43,20 +45,27 @@ void loop()
 	ioService->Run();
     setupService->Run();
 
-    /*
-    if (RFID.available() > 0) {
-        char receivedID[14];
-        for (int i = 0; i < 14; i++) {
-            receivedID[i] = RFID.read();
-        }
-        
-        Serial.print("Nactene ID: ");
-
-        for (int i = 1; i < 14; i++) {
-            Serial.print(receivedID[i]);
-            Serial.print(" ");
-        }
+    Logger::Log(String(RFID.available()));
+    for (size_t i = 0; i < 14; i++)
+    {
+        RFID.read();
     }
-    */
+    
     
 }
+
+
+// // připojení knihovny SoftwareSerial
+// #include "Arduino.h"
+// #include <SoftwareSerial.h>
+// // inicializace RFID z knihovny SoftwareSerial
+// SoftwareSerial RFID(8, 0);
+
+// void setup() {
+//   RFID.begin(9600);
+//   Serial.begin(9600);
+// }
+
+// void loop() {
+//     Serial.println(String(RFID.available()));
+// }

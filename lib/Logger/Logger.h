@@ -7,9 +7,6 @@
 #include "Arduino.h"
 #include "ILoggable.h"
 #include "Time.h"
-#include "SoftwareSerial.h"
-
-SoftwareSerial _bluetooth(10, 11);
 
 class Logger{
 public:
@@ -18,7 +15,6 @@ public:
     //!
     static void Setup(unsigned long baud = 9600){
 	    Serial.begin(baud);
-        _bluetooth.begin(baud);
     }
 
     static void Log(Time* time, ILoggable* object, String msg1, String msg2 = "", String msg3 = "", String msg4 = "", String msg5 = ""){
@@ -26,7 +22,6 @@ public:
         String objectStr = (object == NULL) ? "null" : object->GetLogName();
         String logString = timeStr + " - " + objectStr + " : " + msg1 + " " + msg2 + " " + msg3 + " " + msg4 + " " + msg5;
         Serial.println(logString);  
-        _bluetooth.println(logString);
     }
 
     static void Log(ILoggable* object, String msg1, String msg2 = "", String msg3 = "", String msg4 = "", String msg5 = ""){
