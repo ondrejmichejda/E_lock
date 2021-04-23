@@ -38,7 +38,7 @@ public:
 	//! @param pin Used pin for this button.
 	//! @param name Name of this button.(it's numeric value)
 	//!
-	Key(int pin, String name, TimeService* timeService = NULL){
+	Key(int pin, String name, TimeService* timeService){
         _timeService = timeService;
 		_pin = pin;
 		Name = String(name);
