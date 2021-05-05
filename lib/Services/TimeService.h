@@ -5,8 +5,8 @@
 #include "BaseService.h"
 #include "ILoggable.h"
 #include "Logger.h"
-#include "Time.h"
-#include "PulseGenerator.h"
+#include "RTC.h"
+#include "RTCEdit.h"
 
 #define FREQ 600
 
@@ -14,24 +14,16 @@
 class TimeService : public BaseService, public ILoggable
 {
 private:
-    PulseGenerator* Generator = NULL;
 
     //! Initialization.
     void _init(){
-        Generator = new PulseGenerator(FREQ);
-        TimeAct = new Time(0, 0, 1);
+        TimeAct = new RTC();
 
         Logger::Log(TimeAct, this, Texts::Init);
     }
 
     //! Work to be done.
-    void _work(){
-        if(Generator->On()){
-            TimeAct->Tick();
-            // Logger::Log(TimeAct, this, "");
-        }
-
-    }
+    void _work(){}
 
     void _failed(){
         //log
@@ -39,10 +31,10 @@ private:
 
 public:
     // Actual Time object.
-    Time* TimeAct = NULL;
+    RTC* TimeAct;
 
     // Editable Time object.
-    Time* TimeEdit = NULL;
+    RTCEdit* TimeEdit = NULL;
 
     //! Initializes TimeService
     //! @param ioservice The IOService reference.
@@ -58,12 +50,12 @@ public:
 
     // Store copy of actual time in edit time
     void SetTimeEdit(){
-        TimeEdit = new Time(TimeAct->GetTimeInt(), 1);
+        TimeEdit = new RTCEdit(TimeAct->GetDateTime());
     }
 
     // Overrides act time with edit time
     void SetTimeAct(){
-        TimeAct = new Time(TimeEdit->GetTimeInt(), 1);
+        TimeAct->Modify(TimeEdit->GetDateTime());
     }
 };
 

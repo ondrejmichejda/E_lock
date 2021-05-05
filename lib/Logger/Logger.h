@@ -6,7 +6,7 @@
 
 #include "Arduino.h"
 #include "ILoggable.h"
-#include "Time.h"
+#include "RTC.h"
 
 class Logger{
 public:
@@ -17,8 +17,8 @@ public:
 	    Serial.begin(baud);
     }
 
-    static void Log(Time* time, ILoggable* object, String msg1, String msg2 = "", String msg3 = "", String msg4 = "", String msg5 = ""){
-        String timeStr = (time == NULL) ? "null" : time->GetTimeStr();
+    static void Log(RTC* datetime, ILoggable* object, String msg1, String msg2 = "", String msg3 = "", String msg4 = "", String msg5 = ""){
+        String timeStr = (datetime == NULL) ? "null" : datetime->GetTimeStr();
         String objectStr = (object == NULL) ? "null" : object->GetLogName();
         String logString = timeStr + " - " + objectStr + " : " + msg1 + " " + msg2 + " " + msg3 + " " + msg4 + " " + msg5;
         Serial.println(logString);  

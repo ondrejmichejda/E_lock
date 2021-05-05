@@ -23,6 +23,10 @@ public:
 	//! @return Minutes.
 	virtual int GetMinute() = 0;
 
+    //! Get actual seconds.
+    //! @return Seconds.
+    virtual int GetSecond() = 0;
+
 	//! Get total minutes.
 	//! @return Total minutes.
 	virtual int GetTimeInt() = 0;

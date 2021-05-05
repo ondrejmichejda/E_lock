@@ -8,7 +8,7 @@
 #include "IOService.h"
 #include "TOn.h"
 
-#define PASSWORD_TIMEOUT 10000
+#define PASSWORD_TIMEOUT 100000
 #define EDIT_TIMEOUT 20000
 #define PASSWORD_DIGITS 4
 
@@ -45,9 +45,10 @@ private:
         // If mode 0 display time
         if(_mode == 0 && _timeService->TimeAct->Changed()){
             _ioService->Display1->ShowTime(_timeService->TimeAct);
-        }else if(_mode == 2 && _timeService->TimeEdit->Changed()){
-            _ioService->Display1->ShowTime(_timeService->TimeEdit);
         }
+        // else if(_mode == 2 && _timeService->TimeEdit->Changed()){
+        //     _ioService->Display1->ShowTime(_timeService->TimeEdit);
+        // }
 
         // 1. Hold button 1 to enter password mode
         if(_ioService->Key1->Long && _mode == 0){
@@ -78,17 +79,17 @@ private:
 
         // 3. Edit time: hour=1/2 minute=3/4 buttons
         if(_mode == 2){
-            if(_ioService->Key1->Click)
-                _timeService->TimeEdit->Modify(true, true);
-            if(_ioService->Key2->Click)
-                _timeService->TimeEdit->Modify(true, false);
-            if(_ioService->Key3->Click)
-                _timeService->TimeEdit->Modify(false, true);
-            if(_ioService->Key4->Click)
-                _timeService->TimeEdit->Modify(false, false);
+            // if(_ioService->Key1->Click)
+            //     _timeService->TimeEdit->Modify(true, true);
+            // if(_ioService->Key2->Click)
+            //     _timeService->TimeEdit->Modify(true, false);
+            // if(_ioService->Key3->Click)
+            //     _timeService->TimeEdit->Modify(false, true);
+            // if(_ioService->Key4->Click)
+            //     _timeService->TimeEdit->Modify(false, false);
             
-            if(_ioService->Key1->Click || _ioService->Key2->Click || _ioService->Key3->Click || _ioService->Key4->Click)
-                _editModeTimeout->Elapsed = 0;
+            // if(_ioService->Key1->Click || _ioService->Key2->Click || _ioService->Key3->Click || _ioService->Key4->Click)
+            //     _editModeTimeout->Elapsed = 0;
         }
 
         // Exit edit mode after 20s of inactivity or 
@@ -96,7 +97,7 @@ private:
         if(_mode == 2 && (_editModeTimeout->Out || _ioService->Key4->Long)){
             _editModeTimeout->In = false;
             _mode = 0;
-            _timeService->SetTimeAct();
+            //_timeService->SetTimeAct();
             Logger::Log(_timeService->TimeAct, this, "Exit Edit mode");
             _ioService->Display1->TurnOff();
             delay(1000);
@@ -127,8 +128,8 @@ private:
         if(_mode == 2 && _modeOld != 2){
             Logger::Log(_timeService->TimeAct, this, "Enter Edit mode");
             _pwdModeTimeout->In = false;
-            _timeService->SetTimeEdit();
-            _ioService->Display1->ShowTime(_timeService->TimeEdit);
+            //_timeService->SetTimeEdit();
+            //_ioService->Display1->ShowTime(_timeService->TimeEdit);
             _editModeTimeout->In = true;
         }
 
@@ -136,6 +137,7 @@ private:
 
         _pwdModeTimeout->Run();
         _editModeTimeout->Run();
+        
     }
 
     // Failed.
@@ -167,7 +169,6 @@ private:
         for (size_t i = 0; i < size; i++){
             if(pwd[i] != insertPwd[i])
                 result = false;
-            // Serial.println(pwd[i] + " = " + insertPwd[i]);
         }
         return result;
     }

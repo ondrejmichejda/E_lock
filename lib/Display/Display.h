@@ -54,7 +54,15 @@ public:
 	//! Show time value on this display.
 	//! @param time The time object displayed on this display.
 	//!
-	void ShowTime(Time* time){
+	void ShowTime(RTC* time){
+		_display->showNumberDec(time->GetMinute(), true, 2, 2);
+		_display->showNumberDecEx(time->GetHour(), 0b01000000, true, 2, 0);	
+	}
+
+    //! Show time value on this display.
+	//! @param time The time object displayed on this display.
+	//!
+	void ShowTime(RTCEdit* time){
 		_display->showNumberDec(time->GetMinute(), true, 2, 2);
 		_display->showNumberDecEx(time->GetHour(), 0b01000000, true, 2, 0);	
 	}

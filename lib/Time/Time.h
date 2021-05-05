@@ -87,6 +87,12 @@ public:
 		return _time % 60;
 	}
 
+    //! Get actual seconds.
+    //! @return Seconds.
+    virtual int GetSecond(){
+        return 0;
+    }
+
 	//! Get total minutes.
 	//! @return Total minutes.
 	int GetTimeInt(){

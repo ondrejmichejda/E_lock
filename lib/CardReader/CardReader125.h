@@ -71,8 +71,10 @@ public:
 
     // Clear buffer and enable reading
     void ClearBuffer(){
-        _enableRead = true;
-        Logger::Log(_timeService->TimeAct, this, "Reading enabled");
+        if(!_enableRead){
+            _enableRead = true;
+            Logger::Log(_timeService->TimeAct, this, "Reading enabled");
+        }
     }
 
     String GetLogName(){
