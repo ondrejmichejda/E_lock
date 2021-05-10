@@ -8,6 +8,7 @@
 #include "Key.h"
 #include "Display.h"
 #include "CardReader125.h"
+#include "RGBLED.h"
 
 #define NUMBER_OF_KEYS 4
 
@@ -36,6 +37,8 @@ private:
 
         Reader = new CardReader125(8, _timeService);
 
+        Led = new RGBLED(9, 10, 11, _timeService);
+
         Logger::Log(_timeService->TimeAct, this, Texts::Init);
     }
 
@@ -47,6 +50,7 @@ private:
         }
 
         Reader->Run();
+        Led->Run();
     }
 
     //! Failed.
@@ -66,6 +70,9 @@ public:
 
     // Card reader
     CardReader125* Reader;
+
+    //RGB LED
+    RGBLED* Led;
 
     //! Initializes IOService.
     //! @param timeService Reference to TimeService.
