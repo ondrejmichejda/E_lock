@@ -17,9 +17,6 @@ public:
 
     // Return data
     virtual String GetData() = 0;
-
-    // Clear buffer and enable reading
-    virtual void ClearBuffer() = 0;
 };
 
 #endif

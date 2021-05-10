@@ -2,14 +2,10 @@
 #include "TimeService.h"
 #include "SetupService.h"
 
-#include "CardReader125.h"
-
 // Services declaration ->
 TimeService* timeService;
 IOService* ioService;
 SetupService* setupService;
-
-CardReader125* reader;
 // <-
 
 // *************************************************************
@@ -33,8 +29,6 @@ void setup()
     setupService->Setup("Setup Service");
 
     Logger::Log(timeService->TimeAct, NULL, "E-Lock on Arduino started");
-
-    reader = new CardReader125(8, timeService);
 }
 
 // *************************************************************
@@ -45,11 +39,5 @@ void loop()
     timeService->Run();
 	ioService->Run();
     setupService->Run();
-
-    reader->Run();
-
-    if(ioService->Key1->Click){
-        reader->ClearBuffer();
-    }
 }
 

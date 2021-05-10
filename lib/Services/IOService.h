@@ -7,6 +7,7 @@
 #include "Logger.h"
 #include "Key.h"
 #include "Display.h"
+#include "CardReader125.h"
 
 #define NUMBER_OF_KEYS 4
 
@@ -31,8 +32,9 @@ private:
         Key4 = new Key(6, "4", _timeService);
         _keys[3] = Key4;
         
-
         Display1 = new Display(2, 3);
+
+        Reader = new CardReader125(8, _timeService);
 
         Logger::Log(_timeService->TimeAct, this, Texts::Init);
     }
@@ -43,6 +45,8 @@ private:
         {
             _keys[i]->Run();
         }
+
+        Reader->Run();
     }
 
     //! Failed.
@@ -52,13 +56,16 @@ private:
 
 public:
     //! Keys definitions
-    Key* Key1 = NULL;
-    Key* Key2 = NULL;
-    Key* Key3 = NULL;
-    Key* Key4 = NULL;
+    Key* Key1;
+    Key* Key2;
+    Key* Key3;
+    Key* Key4;
 
     //! Display definition
     Display* Display1;
+
+    // Card reader
+    CardReader125* Reader;
 
     //! Initializes IOService.
     //! @param timeService Reference to TimeService.

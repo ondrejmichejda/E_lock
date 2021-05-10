@@ -20,6 +20,14 @@ private:
     bool _newData;
     bool _enableRead;
 
+    // Clear buffer and enable reading
+    void _clearBuffer(){
+        if(!_enableRead){
+            _enableRead = true;
+            Logger::Log(_timeService->TimeAct, this, "Reading enabled");
+        }
+    }
+
 public:
     //! Initializes card reader object.
     //! @param rx Receiver pin
@@ -54,6 +62,17 @@ public:
                 while (_serial->available() > 0) {_serial->read();}
             }
         }
+
+        if(_newData){
+            _readTOn->In = true;
+        }
+
+        if(_readTOn->Out){
+            _clearBuffer();
+            _readTOn->In = false;
+        }
+
+        _readTOn->Run();
     }
 
     //! Return data on new data arrival
@@ -67,14 +86,6 @@ public:
     String GetData(){
         _newData = false;
         return _msg;
-    }
-
-    // Clear buffer and enable reading
-    void ClearBuffer(){
-        if(!_enableRead){
-            _enableRead = true;
-            Logger::Log(_timeService->TimeAct, this, "Reading enabled");
-        }
     }
 
     String GetLogName(){
