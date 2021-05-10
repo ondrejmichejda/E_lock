@@ -24,6 +24,9 @@ private:
     TOn* _editModeTimeout = NULL;
     int _insPwd[PASSWORD_DIGITS] = {0, 0, 0, 0};    // inserted password by user
     int _pwd[PASSWORD_DIGITS] = {1, 4, 2, 3};       // real password to compare with
+    int8_t _hour = 0;                               // hour in edit mode
+    int8_t _min = 0;                                // minute in edit mode
+    int _minOld = 0;                        
 
     // Initialization.
     void _init(){
@@ -39,16 +42,16 @@ private:
         // 2. Enter password combination 1-4-2-3 to enter edit mode 
         // (If not entered till 10s -> exit password mode)
         // 3. Edit time: hour 1/2 minute 3/4 buttons
-        // 4. Hold button 4 to exit edit mode
+        // 4. Hold button 1 to exit edit mode
         //********************************
 
         // If mode 0 display time
         if(_mode == 0 && _timeService->TimeAct->Changed()){
             _ioService->Display1->ShowTime(_timeService->TimeAct);
         }
-        // else if(_mode == 2 && _timeService->TimeEdit->Changed()){
-        //     _ioService->Display1->ShowTime(_timeService->TimeEdit);
-        // }
+        else if(_mode == 2 && _minChanged()){
+            _ioService->Display1->ShowTime(_hour, _min);
+        }
 
         // 1. Hold button 1 to enter password mode
         if(_ioService->Key1->Long && _mode == 0){
@@ -79,28 +82,33 @@ private:
 
         // 3. Edit time: hour=1/2 minute=3/4 buttons
         if(_mode == 2){
-            // if(_ioService->Key1->Click)
-            //     _timeService->TimeEdit->Modify(true, true);
-            // if(_ioService->Key2->Click)
-            //     _timeService->TimeEdit->Modify(true, false);
-            // if(_ioService->Key3->Click)
-            //     _timeService->TimeEdit->Modify(false, true);
-            // if(_ioService->Key4->Click)
-            //     _timeService->TimeEdit->Modify(false, false);
+            if(_ioService->Key1->Click)
+                _hour++;
+            if(_ioService->Key2->Click)
+                _hour--;
+            if(_ioService->Key3->Click)
+                _min++;
+            if(_ioService->Key4->Click)
+                _min--;
+
+            if(_ioService->Key3->Long)
+                _min = _min + 10;
+            if(_ioService->Key4->Long)
+                _min = _min - 10;
             
-            // if(_ioService->Key1->Click || _ioService->Key2->Click || _ioService->Key3->Click || _ioService->Key4->Click)
-            //     _editModeTimeout->Elapsed = 0;
+            if(_ioService->Key1->Click || _ioService->Key2->Click || _ioService->Key3->Click || _ioService->Key4->Click)
+                _editModeTimeout->Elapsed = 0;
         }
 
         // Exit edit mode after 20s of inactivity or 
-        // 4. Hold button 4 to exit edit mode
-        if(_mode == 2 && (_editModeTimeout->Out || _ioService->Key4->Long)){
+        // 4. Hold button 1 to exit edit mode
+        if(_mode == 2 && (_editModeTimeout->Out || _ioService->Key1->Long)){
             _editModeTimeout->In = false;
             _mode = 0;
-            //_timeService->SetTimeAct();
-            Logger::Log(_timeService->TimeAct, this, "Exit Edit mode");
+            _timeService->TimeAct->SetTime(_hour, _min);
             _ioService->Display1->TurnOff();
             delay(1000);
+            Logger::Log(_timeService->TimeAct, this, "Exit Edit mode - Time changed");
         }
 
         // ***************************
@@ -126,11 +134,12 @@ private:
 
         // Entering Edit mode
         if(_mode == 2 && _modeOld != 2){
-            Logger::Log(_timeService->TimeAct, this, "Enter Edit mode");
+            _hour = _timeService->TimeAct->GetHour();
+            _min = _timeService->TimeAct->GetMinute();
             _pwdModeTimeout->In = false;
-            //_timeService->SetTimeEdit();
-            //_ioService->Display1->ShowTime(_timeService->TimeEdit);
+            _ioService->Display1->ShowTime(_hour, _min);
             _editModeTimeout->In = true;
+            Logger::Log(_timeService->TimeAct, this, "Enter Edit mode");
         }
 
         _modeOld = _mode;
@@ -138,6 +147,12 @@ private:
         _pwdModeTimeout->Run();
         _editModeTimeout->Run();
         
+        // Edit hour and minute overflow check
+        if(_hour > 23) _hour = 0;
+        if(_min > 59) _min = 0;
+
+        if(_hour < 0) _hour = 23;
+        if(_min < 0) _min = 59;
     }
 
     // Failed.
@@ -171,6 +186,17 @@ private:
                 result = false;
         }
         return result;
+    }
+
+    //! Checks whether edit time changed.
+    //! @return True if edit time changed.
+    bool _minChanged(){
+        int totalMin = _hour * 60 + _min;
+		if(_minOld != totalMin){
+			_minOld = totalMin;
+			return true;
+		}
+		return false;	
     }
 
 public:

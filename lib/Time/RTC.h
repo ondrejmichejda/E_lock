@@ -88,15 +88,14 @@ public:
 		return _rtc->now().day() + String(".") + _rtc->now().month() + String(".") + _rtc->now().year() + " " + hour + ":" + min + ":" + sec;
 	}
 
-	//! Modify time by 1 for desired scale (hour, minute).
-	//! @param dt Datetime to set.
-	void Modify(DateTime dt){
-		_rtc->adjust(dt);
-	}
-
-    void Modify(bool hour, bool dir){
-		// do nothing
-	}
+    //! Set the time
+    //! @param h Hours to set
+    //! @param m Minutes to set
+    //! @param s Seconds to set
+    void SetTime(uint8_t h, uint8_t m = 0, uint8_t s = 0){
+        DateTime n = _rtc->now();
+        _rtc->adjust(DateTime(n.year(), n.month(), n.day(), h, m, s));
+    }
 };
 
 #endif

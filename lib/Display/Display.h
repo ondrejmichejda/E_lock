@@ -60,11 +60,12 @@ public:
 	}
 
     //! Show time value on this display.
-	//! @param time The time object displayed on this display.
+	//! @param h Hour to display.
+    //! @param m Minute to display.
 	//!
-	void ShowTime(RTCEdit* time){
-		_display->showNumberDec(time->GetMinute(), true, 2, 2);
-		_display->showNumberDecEx(time->GetHour(), 0b01000000, true, 2, 0);	
+	void ShowTime(uint8_t h, uint8_t m){
+		_display->showNumberDec(m, true, 2, 2);
+		_display->showNumberDecEx(h, 0b01000000, true, 2, 0);	
 	}
 
     // Shut off display.

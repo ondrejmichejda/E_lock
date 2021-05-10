@@ -36,11 +36,11 @@ public:
 	//!
 	virtual String GetTimeStr() = 0;
 
-	//! Modify time by 1 for desired scale (hour, minute).
-	//! @param hour TRUE to change hour, FALSE to change minutes.
-	//! @param dir TRUE to increase, FALSE to decrease.
-	//!
-	virtual void Modify(bool hour, bool dir) = 0;
+    //! Set the time
+    //! @param h Hours to set
+    //! @param m Minutes to set
+    //! @param s Seconds to set
+    virtual void SetTime(uint8_t h, uint8_t m = 0, uint8_t s = 0) = 0;
 };
 
 #endif
