@@ -17,19 +17,19 @@ public:
 	    Serial.begin(baud);
     }
 
-    static void Log(RTC* datetime, ILoggable* object, String msg1, String msg2 = "", String msg3 = "", String msg4 = "", String msg5 = ""){
+    static void Log(RTC* datetime, ILoggable* object, String msg1, String msg2 = ""){
         String timeStr = (datetime == NULL) ? "null" : datetime->GetTimeStr();
         String objectStr = (object == NULL) ? "null" : object->GetLogName();
-        String logString = timeStr + " - " + objectStr + " : " + msg1 + " " + msg2 + " " + msg3 + " " + msg4 + " " + msg5;
+        String logString = timeStr + " - " + objectStr + " : " + msg1 + " " + msg2;
         Serial.println(logString);  
     }
 
-    static void Log(ILoggable* object, String msg1, String msg2 = "", String msg3 = "", String msg4 = "", String msg5 = ""){
-        Log(NULL, object, msg1, msg2, msg3, msg4, msg5);
+    static void Log(ILoggable* object, String msg1, String msg2 = ""){
+        Log(NULL, object, msg1, msg2);
     }
 
-    static void Log(String msg1, String msg2 = "", String msg3 = "", String msg4 = "", String msg5 = ""){
-        Log(NULL, NULL, msg1, msg2, msg3, msg4, msg5);
+    static void Log(String msg1, String msg2 = ""){
+        Log(NULL, NULL, msg1, msg2);
     }
 };
 #endif

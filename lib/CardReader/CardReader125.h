@@ -54,6 +54,7 @@ public:
                         i++;
                     }
                 }
+                Serial.println(this->GetLogName());
                 Logger::Log(_timeService->TimeAct, this, _msg);
                 _newData = true;
                 _enableRead = false;
