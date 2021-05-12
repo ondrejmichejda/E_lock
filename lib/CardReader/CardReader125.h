@@ -16,15 +16,17 @@ private:
     SoftwareSerial* _serial;
     TimeService* _timeService;
     TOn* _readTOn;
-    String _msg;
+    int _msg[12];
     bool _newData;
     bool _enableRead;
+    String _code;
 
     // Clear buffer and enable reading
     void _clearBuffer(){
         if(!_enableRead){
             _enableRead = true;
-            Logger::Log(_timeService->TimeAct, this, "Reading enabled");
+            // char rE[] = "Reading enabled";
+            // Logger::Log(_timeService->TimeAct, this, rE);
         }
     }
 
@@ -46,16 +48,21 @@ public:
         if(_serial->available() > 0){
             if(_enableRead){
                 int i = 0;
-                _msg = "";
                 while (_serial->available() > 0) {
                     int b = _serial->read();
-                    if(i<14){
-                        _msg += String(b);
-                        i++;
+                    if(i<13 && i>1){
+                        _msg[i-2] = b;
                     }
+                    i++;
                 }
-                Serial.println(this->GetLogName());
-                Logger::Log(_timeService->TimeAct, this, _msg);
+                
+                _code = "";
+                for (size_t i = 0; i < 11; i++)
+                {
+                    _code += String(_msg[i]);
+                }
+
+                Logger::Log(_timeService->TimeAct, this, _code);
                 _newData = true;
                 _enableRead = false;
             }
@@ -86,7 +93,7 @@ public:
     //! @return Id in int array.
     String GetData(){
         _newData = false;
-        return _msg;
+        return _code;
     }
 
     String GetLogName(){

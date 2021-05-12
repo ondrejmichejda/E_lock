@@ -10,7 +10,6 @@
 #include "TimeService.h"
 #include "TOn.h"
 #include "ILoggable.h"
-#include "Logger.h"
 
 //! Class to cover button functionality.
 class Key : public ILoggable
@@ -32,16 +31,16 @@ public:
 	bool Long;
 
     // Button name
-    String Name;
+    char Name[10];
 
 	//! Initializes button object.
 	//! @param pin Used pin for this button.
 	//! @param name Name of this button.(it's numeric value)
 	//!
-	Key(int pin, String name, TimeService* timeService){
+	Key(int pin, char name[10], TimeService* timeService){
         _timeService = timeService;
 		_pin = pin;
-		Name = String(name);
+		strcpy(Name, name);
 		pinMode(_pin, INPUT_PULLUP);
 
 		// init variables
@@ -70,12 +69,18 @@ public:
 		// long pressed first priority
 		if(_long && !_longOld){
 			Long = true;
-			Logger::Log(_timeService->TimeAct, this, Name, Texts::Hold);
+            char holdText[30];
+            strcpy(holdText, Name);
+            strcat(holdText, " Hold");
+			Logger::Log(_timeService->TimeAct, this, holdText);
 		}
 		// click if no ton.out active in this cycle (to prevent click flag on release of long hold)
 		else if (!_click && _clickOld && !_ton->Out){
 			Click = true;
-			Logger::Log(_timeService->TimeAct, this, Name, Texts::Click);
+            char clickText[30];
+            strcpy(clickText, Name);
+            strcat(clickText, " Click");
+			Logger::Log(_timeService->TimeAct, this, clickText);
 		}
 		_longOld = _long;
 		_clickOld = _click;	

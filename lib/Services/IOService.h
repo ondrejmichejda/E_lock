@@ -21,16 +21,20 @@ private:
 
     //! Initialization.
     void _init(){
-        Key1 = new Key(5, "1", _timeService);
+        char k1Name[] = "1";
+        Key1 = new Key(5, k1Name, _timeService);
         _keys[0] = Key1;
 
-        Key2 = new Key(4, "2", _timeService);
+        char k2Name[] = "2";
+        Key2 = new Key(4, k2Name, _timeService);
         _keys[1] = Key2;
 
-        Key3 = new Key(7, "3", _timeService);
+        char k3Name[] = "3";
+        Key3 = new Key(7, k3Name, _timeService);
         _keys[2] = Key3;
 
-        Key4 = new Key(6, "4", _timeService);
+        char k4Name[] = "4";
+        Key4 = new Key(6, k4Name, _timeService);
         _keys[3] = Key4;
         
         Display1 = new Display(2, 3);
@@ -39,7 +43,7 @@ private:
 
         Led = new RGBLED(9, 10, 11, _timeService);
 
-        Logger::Log(_timeService->TimeAct, this, Texts::Init);
+        Logger::Log(_timeService->TimeAct, this, initText);
     }
 
     //! Work to be done.
@@ -55,7 +59,7 @@ private:
 
     //! Failed.
     void _failed(){
-        Logger::Log(_timeService->TimeAct, this, Texts::Fail);
+        Logger::Log(_timeService->TimeAct, this, failText);
     }
 
 public:

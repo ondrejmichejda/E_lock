@@ -31,7 +31,7 @@ private:
     // Initialization.
     void _init(){
         // init code here
-        Logger::Log(_timeService->TimeAct, this, Texts::Init);
+        Logger::Log(_timeService->TimeAct, this, initText);
     }
 
     // Work to be done.
@@ -62,7 +62,8 @@ private:
         if(_mode == 1 && _pwdModeTimeout->Out){
             _pwdModeTimeout->In = false;
             _mode = 0;
-            Logger::Log(_timeService->TimeAct, this, "Exit Password mode (timeout)");
+            char pwdTimeoutText[] = "Exit Password mode (timeout)";
+            Logger::Log(_timeService->TimeAct, this, pwdTimeoutText);
         }
 
         // 2. Enter password combination 1-4-2-3 to enter edit mode
@@ -108,7 +109,8 @@ private:
             _timeService->TimeAct->SetTime(_hour, _min);
             _ioService->Display1->TurnOff();
             delay(1000);
-            Logger::Log(_timeService->TimeAct, this, "Exit Edit mode - Time changed");
+            char exitEditText[] = "Exit Edit mode - Time changed";
+            Logger::Log(_timeService->TimeAct, this, exitEditText);
         }
 
         // ***************************
@@ -116,7 +118,8 @@ private:
 
         // Entering normal mode
         if(_mode == 0 && _modeOld != 0){
-            Logger::Log(_timeService->TimeAct, this, "Enter normal mode");
+            char enterNormalText[] = "Enter normal mode";
+            Logger::Log(_timeService->TimeAct, this, enterNormalText);
             _insPwd[0] = 0;
             _insPwd[1] = 0;
             _insPwd[2] = 0;
@@ -127,7 +130,8 @@ private:
 
         // Entering password mode
         if(_mode == 1 && _modeOld != 1){
-            Logger::Log(_timeService->TimeAct, this, "Enter Password mode");
+            char enterPwdText[] = "Enter Password mode";
+            Logger::Log(_timeService->TimeAct, this, enterPwdText);
             _ioService->Display1->ShowPwdMode();
             _pwdModeTimeout->In = true;
         }
@@ -139,7 +143,8 @@ private:
             _pwdModeTimeout->In = false;
             _ioService->Display1->ShowTime(_hour, _min);
             _editModeTimeout->In = true;
-            Logger::Log(_timeService->TimeAct, this, "Enter Edit mode");
+            char enterEditText[] = "Enter Edit mode";
+            Logger::Log(_timeService->TimeAct, this, enterEditText);
         }
 
         _modeOld = _mode;
@@ -157,7 +162,7 @@ private:
 
     // Failed.
     void _failed(){
-        Logger::Log(_timeService->TimeAct, this, Texts::Fail);
+        Logger::Log(_timeService->TimeAct, this, failText);
     }
 
     //! Shifts array to left and add newElement to the most right position.

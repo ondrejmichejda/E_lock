@@ -6,13 +6,12 @@
 #define BaseService_h
 
 #include "Arduino.h"
-#include "Texts.h"
 
 class BaseService
 {
 private:
     //! Service status. True if ok.
-	bool _status;
+	bool _status = true;
 
 	//! Status check function. If status bad, then restart service.
 	void _statusCheck(){
@@ -25,6 +24,9 @@ private:
 
 protected:
 	
+    char initText[12] = "Initialized";
+    char failText[7] = "Failed";
+
 	//! Initialization of all obects, call after fail.
 	virtual void _init();
 
@@ -48,8 +50,8 @@ public:
 	//! Fake constructor used in SETUP function in main.cpp.
 	//! @param name Name of this service.
 	//!
-	void Setup(String name){
-		name.toCharArray(Name, 20);
+	void Setup(char name[20]){
+		strcpy(Name, name);
 		_init();
 	}
 

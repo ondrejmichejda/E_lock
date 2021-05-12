@@ -18,17 +18,21 @@ void setup()
 
     // Time Service
 	timeService = new TimeService();
-	timeService->Setup("Time Service");
+    char timeName[] = "Time Service";
+	timeService->Setup(timeName);
 
 	// IO Service
 	ioService = new IOService(timeService);
-	ioService->Setup("IO Service");
+    char ioName[] = "IO Service";
+	ioService->Setup(ioName);
 
     // Setup Service
     setupService = new SetupService(timeService, ioService);
-    setupService->Setup("Setup Service");
+    char setupName[] = "Setup Service";
+    setupService->Setup(setupName);
 
-    Logger::Log(timeService->TimeAct, NULL, "E-Lock on Arduino started");
+    char startText[] = "E-lock on Arduino started";
+    Logger::Log(timeService->TimeAct, NULL, startText);
 }
 
 // *************************************************************
