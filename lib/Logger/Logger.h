@@ -17,15 +17,15 @@ public:
 	    Serial.begin(baud);
     }
 
-    static void Log(RTC* datetime, ILoggable* object, char msg1[50]){
-        String timeStr = (datetime == NULL) ? "null" : datetime->GetTimeStr();
+    static void Log(RTC* rtc, ILoggable* object, char msg1[50]){
+        String timeStr = (rtc == NULL) ? "null" : rtc->GetTimeStr();
         String objectStr = (object == NULL) ? "null" : object->GetLogName();
         String logString = timeStr + " - " + objectStr + " : " + msg1;
         Serial.println(logString);  
     }
 
-    static void Log(RTC* datetime, ILoggable* object, String msg1){
-        String timeStr = (datetime == NULL) ? "null" : datetime->GetTimeStr();
+    static void Log(RTC* rtc, ILoggable* object, String msg1){
+        String timeStr = (rtc == NULL) ? "null" : rtc->GetTimeStr();
         String objectStr = (object == NULL) ? "null" : object->GetLogName();
         String logString = timeStr + " - " + objectStr + " : " + msg1;
         Serial.println(logString); 

@@ -6,15 +6,11 @@
 
 #include "ICardReader.h"
 #include "SoftwareSerial.h"
-#include "ILoggable.h"
-#include "Logger.h"
-#include "TimeService.h"
 
-class CardReader125 : public ICardReader, public ILoggable
+class CardReader125 : public ICardReader
 {
 private:
     SoftwareSerial* _serial;
-    TimeService* _timeService;
     TOn* _readTOn;
     int _msg[12];
     bool _newData;
@@ -25,8 +21,6 @@ private:
     void _clearBuffer(){
         if(!_enableRead){
             _enableRead = true;
-            // char rE[] = "Reading enabled";
-            // Logger::Log(_timeService->TimeAct, this, rE);
         }
     }
 
@@ -34,8 +28,7 @@ public:
     //! Initializes card reader object.
     //! @param rx Receiver pin
     //!
-    CardReader125(uint8_t rx, TimeService* timeService, long commSpeed = 9600){
-        _timeService = timeService;
+    CardReader125(uint8_t rx, long commSpeed = 9600){
         _readTOn = new TOn(2000);
         _serial = new SoftwareSerial(rx, 0);
         _serial->begin(commSpeed);
@@ -61,8 +54,6 @@ public:
                 {
                     _code += String(_msg[i]);
                 }
-
-                Logger::Log(_timeService->TimeAct, this, _code);
                 _newData = true;
                 _enableRead = false;
             }
@@ -94,10 +85,6 @@ public:
     String GetData(){
         _newData = false;
         return _code;
-    }
-
-    String GetLogName(){
-        return "Card Reader";
     }
 };
 

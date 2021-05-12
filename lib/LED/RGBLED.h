@@ -5,27 +5,23 @@
 #define RGBLED_h
 
 #include "Arduino.h"
-#include "TimeService.h"
 #include "TOn.h"
-#include "ILoggable.h"
-#include "Logger.h"
 
 //! Class to cover button functionality.
-class RGBLED : public ILoggable
+class RGBLED
 {
 private:
 	uint8_t _pin_r;
     uint8_t _pin_g;
     uint8_t _pin_b;
 	TOn* _ton = NULL;
-    TimeService* _timeService = NULL;
 
 public:
 	//! Initializes LED object.
 	//! @param pin_r Pin for RED intensity.
     //! @param pin_g Pin for GREEN intensity.
     //! @param pin_b Pin for BLUE intesity.
-	RGBLED(uint8_t pin_r, uint8_t pin_g, uint8_t pin_b, TimeService* timeService){
+	RGBLED(uint8_t pin_r, uint8_t pin_g, uint8_t pin_b){
         _pin_r = pin_r;
         _pin_g = pin_g;
         _pin_b = pin_b;
@@ -81,10 +77,6 @@ public:
 	// Blue light.
     void Blue(){
         On(0, 0, 255);
-    }
-
-    String GetLogName(){
-        return "RGB LED";
     }
 };
 
