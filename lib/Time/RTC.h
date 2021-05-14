@@ -17,6 +17,7 @@ private:
 public:
 	//! Initializes Time object
 	RTC(){
+        _minOld = 0;
         _rtc = new RTC_DS3231();
         if (! _rtc->begin()) {
             // Serial.println("Couldn't find RTC");

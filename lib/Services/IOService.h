@@ -86,6 +86,13 @@ public:
     //!
     IOService(TimeService* timeService){
         _timeService = timeService;
+        Key1 = NULL;
+        Key2 = NULL;
+        Key3 = NULL;
+        Key4 = NULL;
+        Display1 = NULL;
+        Reader = NULL;
+        Led = NULL;
     }
 
     String GetLogName(){

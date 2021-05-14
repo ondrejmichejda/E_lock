@@ -40,6 +40,7 @@ public:
 	//! @param multiplier 1/Ticks per minute used when Tick() is called.
 	//!
 	Time(long startTime, double multiplier){
+        _time = 0;
 		_multiplier = (multiplier <= 0) ? 1 : multiplier;
 		_tickCtr = startTime * _multiplier;
 		_minOld = 0;

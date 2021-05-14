@@ -28,6 +28,8 @@ public:
     //! @param t Preset time after which Out is set.
 	TOn(long t){
         _time = t;
+        _oldMs = 0;
+        _actMs = 0;
 
         // parameter init
         In = false;

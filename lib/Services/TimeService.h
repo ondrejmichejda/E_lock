@@ -32,7 +32,9 @@ public:
     //! Initializes TimeService
     //! @param ioservice The IOService reference.
     //!
-    TimeService(){}
+    TimeService(){
+        TimeAct = NULL;
+    }
 
     //! Get Name
     //! @return Name of this loggable object.
