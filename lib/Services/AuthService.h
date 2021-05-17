@@ -30,14 +30,13 @@ private:
         if(_ioService->Reader->NewData()) {
             String code = _ioService->Reader->GetData();
             if(_verifyUser(code)){
-                Logger::LogStr(_timeService->TimeAct, this, "OK("+code+")");
+                Logger::LogStr(_timeService->TimeAct, this, "OK(");
                 _ioService->Led->Green();
-                _ioService->LockRelay->Open();
+                _ioService->LockRelay->Close();
             }
             else {
-                Logger::LogStr(_timeService->TimeAct, this, "Failed("+code+")");
+                Logger::LogStr(_timeService->TimeAct, this, "Failed(");
                 _ioService->Led->Red();
-                _ioService->LockRelay->Close();
             }
         }
     }

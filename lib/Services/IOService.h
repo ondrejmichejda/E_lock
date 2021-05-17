@@ -60,6 +60,7 @@ private:
 
         Reader->Run();
         Led->Run();
+        LockRelay->Run();
     }
 
     //! Failed.
