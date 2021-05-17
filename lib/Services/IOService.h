@@ -9,6 +9,7 @@
 #include "Display.h"
 #include "CardReader125.h"
 #include "RGBLED.h"
+#include "Relay.h"
 
 #define NUMBER_OF_KEYS 4
 
@@ -42,6 +43,8 @@ private:
         Reader = new CardReader125(8);
 
         Led = new RGBLED(9, 10, 11);
+
+        LockRelay = new Relay(12);
 
         Logger::Log(_timeService->TimeAct, this, initText);
     }
@@ -79,6 +82,9 @@ public:
 
     //RGB LED
     RGBLED* Led;
+
+    //Relay for lock control
+    Relay* LockRelay;
 
     //! Initializes IOService.
     //! @param timeService Reference to TimeService.

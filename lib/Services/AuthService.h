@@ -32,10 +32,12 @@ private:
             if(_verifyUser(code)){
                 Logger::LogStr(_timeService->TimeAct, this, "OK("+code+")");
                 _ioService->Led->Green();
+                _ioService->LockRelay->Open();
             }
             else {
                 Logger::LogStr(_timeService->TimeAct, this, "Failed("+code+")");
                 _ioService->Led->Red();
+                _ioService->LockRelay->Close();
             }
         }
     }
