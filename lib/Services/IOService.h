@@ -51,12 +51,16 @@ private:
         for (size_t i = 0; i < NUMBER_OF_KEYS; i++)
         {
             _keys[i]->Run();
-            if(_keys[i]->Click) Logger::Log(_timeService->TimeAct, this, "Key " + String(_keys[i]->Name) + " Click");
-            if(_keys[i]->Long) Logger::Log(_timeService->TimeAct, this, "Key " + String(_keys[i]->Name) + " Hold");
+            if(_keys[i]->Click) Logger::LogStr(_timeService->TimeAct, this, "Key " + String(_keys[i]->Name) + " Click");
+            if(_keys[i]->Long) Logger::LogStr(_timeService->TimeAct, this, "Key " + String(_keys[i]->Name) + " Hold");
         }
 
         Reader->Run();
-        if(Reader->NewData()) Logger::Log(_timeService->TimeAct, this, "Card Reader " + Reader->GetData());
+        if(Reader->NewData()) {
+            String code = Reader->GetData();
+
+            Logger::LogStr(_timeService->TimeAct, this, "Card Reader new data:" + code);
+        }
         Led->Run();
     }
 

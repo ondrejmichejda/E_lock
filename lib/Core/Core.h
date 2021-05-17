@@ -8,6 +8,7 @@
 #include "IOService.h"
 #include "TimeService.h"
 #include "SetupService.h"
+#include "AuthService.h"
 
 class Core {
 
@@ -15,8 +16,11 @@ private:
     TimeService* timeService;
     IOService* ioService;
     SetupService* setupService;
+    AuthService* authService;
 
 public:
+
+    // Initializes core class.
     Core(){
         // Static classes init
         Logger::Setup(9600);
@@ -36,10 +40,15 @@ public:
         char setupName[] = "Setup Service";
         setupService->Setup(setupName);
 
+        authService = new AuthService(timeService, ioService);
+        char authName[] = "Auth Service";
+        authService->Setup(authName);
+
         char startText[] = "E-lock on Arduino started";
         Logger::Log(timeService->TimeAct, NULL, startText);
     }   
 
+    // Do the work of Core class.
     void Run(){
         timeService->Run();
         ioService->Run();
