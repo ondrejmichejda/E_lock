@@ -44,7 +44,7 @@ public:
 	//! Main task run in loop.
 	void Run(){
 		_work();
-		//_statusCheck();
+		_statusCheck();
 	}
 
 	//! Fake constructor used in SETUP function in main.cpp.

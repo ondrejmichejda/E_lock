@@ -56,11 +56,6 @@ private:
         }
 
         Reader->Run();
-        if(Reader->NewData()) {
-            String code = Reader->GetData();
-
-            Logger::LogStr(_timeService->TimeAct, this, "Card=" + code);
-        }
         Led->Run();
     }
 
