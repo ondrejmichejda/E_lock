@@ -24,6 +24,7 @@ private:
 
     //! Work to be done.
     void _work(){
+        
     }
 
     //! Failed.

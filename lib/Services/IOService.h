@@ -59,7 +59,7 @@ private:
         if(Reader->NewData()) {
             String code = Reader->GetData();
 
-            Logger::LogStr(_timeService->TimeAct, this, "Card Reader new data:" + code);
+            Logger::LogStr(_timeService->TimeAct, this, "Card=" + code);
         }
         Led->Run();
     }

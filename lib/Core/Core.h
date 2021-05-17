@@ -27,24 +27,25 @@ public:
 
         // Time Service
         timeService = new TimeService();
-        char timeName[] = "Time Service";
+        char timeName[] = "Time";
         timeService->Setup(timeName);
 
         // IO Service
         ioService = new IOService(timeService);
-        char ioName[] = "IO Service";
+        char ioName[] = "IO";
         ioService->Setup(ioName);
 
         // Setup Service
         setupService = new SetupService(timeService, ioService);
-        char setupName[] = "Setup Service";
+        char setupName[] = "Setup";
         setupService->Setup(setupName);
 
+        // Authentication Service
         authService = new AuthService(timeService, ioService);
-        char authName[] = "Auth Service";
+        char authName[] = "Auth";
         authService->Setup(authName);
 
-        char startText[] = "E-lock on Arduino started";
+        char startText[] = "E-lock started";
         Logger::Log(timeService->TimeAct, NULL, startText);
     }   
 
@@ -53,6 +54,7 @@ public:
         timeService->Run();
         ioService->Run();
         setupService->Run();
+        authService->Run();
     } 
 };
 
