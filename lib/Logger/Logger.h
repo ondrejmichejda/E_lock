@@ -8,6 +8,8 @@
 #include "ILoggable.h"
 #include "RTC.h"
 
+#define SEPARATOR ';'
+
 class Logger{
 public:
     //! Start serial communication.
@@ -18,17 +20,25 @@ public:
     }
 
     static void Log(RTC* rtc, ILoggable* object, char msg1[50]){
-        String timeStr = (rtc == NULL) ? "null" : rtc->GetTimeStr();
-        String objectStr = (object == NULL) ? "null" : object->GetLogName();
-        String logString = timeStr + " - " + objectStr + " : " + msg1;
-        Serial.println(logString);  
+        String timeStr = (rtc == NULL) ? "null time" : rtc->GetTimeStr();
+        String objectStr = (object == NULL) ? "null object" : object->GetLogName();
+        Serial.print(timeStr);
+        Serial.print(SEPARATOR); 
+        Serial.print(objectStr);
+        Serial.print(SEPARATOR);  
+        Serial.print(msg1); 
+        Serial.println();
     }
 
-    static void Log(RTC* rtc, ILoggable* object, String msg1){
-        String timeStr = (rtc == NULL) ? "null" : rtc->GetTimeStr();
-        String objectStr = (object == NULL) ? "null" : object->GetLogName();
-        String logString = timeStr + " - " + objectStr + " : " + msg1;
-        Serial.println(logString); 
+    static void LogStr(RTC* rtc, ILoggable* object, String msg1){
+        String timeStr = (rtc == NULL) ? "null time" : rtc->GetTimeStr();
+        String objectStr = (object == NULL) ? "null object" : object->GetLogName();
+        Serial.print(timeStr);
+        Serial.print(SEPARATOR);
+        Serial.print(objectStr);
+        Serial.print(SEPARATOR); 
+        Serial.print(msg1); 
+        Serial.println();
     }
 
     static void Log(ILoggable* object, char msg1[50]){
