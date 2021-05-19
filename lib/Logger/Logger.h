@@ -17,6 +17,17 @@ public:
     //!
     static void Setup(unsigned long baud = 9600){
 	    Serial.begin(baud);
+        while (!Serial) {
+            ; // wait for serial port to connect. Needed for native USB port only
+        }
+    }
+
+    static void Run(){
+        if(Serial.available()){
+            String rec = Serial.readString();
+            delay(500);
+            LogStr(NULL, NULL, rec + "_mark");
+        }
     }
 
     static void Log(RTC* rtc, ILoggable* object, char msg1[50]){

@@ -7,7 +7,6 @@
 
 #include "IOService.h"
 #include "TimeService.h"
-#include "SetupService.h"
 #include "AuthService.h"
 
 class Core {
@@ -15,7 +14,6 @@ class Core {
 private:
     TimeService* timeService;
     IOService* ioService;
-    SetupService* setupService;
     AuthService* authService;
 
 public:
@@ -35,11 +33,6 @@ public:
         char ioName[] = "IO";
         ioService->Setup(ioName);
 
-        // Setup Service
-        setupService = new SetupService(timeService, ioService);
-        char setupName[] = "Setup";
-        setupService->Setup(setupName);
-
         // Authentication Service
         authService = new AuthService(timeService, ioService);
         char authName[] = "Auth";
@@ -53,8 +46,9 @@ public:
     void Run(){
         timeService->Run();
         ioService->Run();
-        setupService->Run();
         authService->Run();
+
+        Logger::Run();
     } 
 };
 

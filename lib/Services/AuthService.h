@@ -31,14 +31,14 @@ private:
             String code = _ioService->Reader->GetData();
 
             // !!! TO DO: Some variation to Dictionary with user names!!! 
-            code = code.substring(0, 10);
+            // code = code.substring(0, 10);
             if(_verifyUser(code)){
-                Logger::LogStr(_timeService->TimeAct, this, "OK(" + code);
+                Logger::LogStr(_timeService->TimeAct, this, "OK " + code);
                 _ioService->Led->Green();
                 _ioService->LockRelay->Close();
             }
             else {
-                Logger::LogStr(_timeService->TimeAct, this, "Failed(" + code);
+                Logger::LogStr(_timeService->TimeAct, this, "Failed " + code);
                 _ioService->Led->Red();
             }
         }

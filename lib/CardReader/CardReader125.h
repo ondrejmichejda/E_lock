@@ -45,6 +45,7 @@ public:
                     int b = _serial->read();
                     if(i<13 && i>1){
                         _msg[i-2] = b;
+                        //Serial.print(b);
                     }
                     i++;
                 }
