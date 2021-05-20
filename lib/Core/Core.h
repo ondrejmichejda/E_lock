@@ -47,6 +47,9 @@ public:
         ioService->Run();
         authService->Run();
         serialService->Run();
+
+        if(serialService->NewData())
+            Serial.println(serialService->GetData());
     } 
 };
 
