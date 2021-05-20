@@ -93,9 +93,9 @@ public:
     //! @param h Hours to set
     //! @param m Minutes to set
     //! @param s Seconds to set
-    void SetTime(uint8_t h, uint8_t m = 0, uint8_t s = 0){
+    void SetTime(uint8_t h, uint8_t m, uint8_t s, uint8_t d, uint8_t MM, uint8_t y){
         DateTime n = _rtc->now();
-        _rtc->adjust(DateTime(n.year(), n.month(), n.day(), h, m, s));
+        _rtc->adjust(DateTime(y, MM, d, h, m, s));
     }
 };
 

@@ -35,7 +35,7 @@ public:
         authService = new AuthService(timeService, ioService);
 
         // Serial Service
-        serialService = new SerialService(timeService);
+        serialService = new SerialService(timeService, ioService);
 
         char startText[] = "E-lock started";
         Logger::Log(timeService->TimeAct, NULL, startText);

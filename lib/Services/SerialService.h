@@ -8,6 +8,7 @@
 #include "Arduino.h"
 #include "BaseService.h"
 #include "TimeService.h"
+#include "IOService.h"
 #include "Logger.h"
 
 #define CMDCOUNT 2
@@ -17,6 +18,7 @@ class SerialService : public BaseService, public ILoggable
 {
 private:
     TimeService* _timeService;
+    IOService* _ioService;
 
     enum Command{
         UNDEFINED = 0,
@@ -39,8 +41,7 @@ private:
             if(cmd != UNDEFINED){
                 Logger::LogStr(_timeService->TimeAct, this, "New valid cmd: '" + String(cmd) + "'");
                 Logger::LogStr(_timeService->TimeAct, this, "Args: '" + args + "'");
-                //_tryProcessCommand(msg);
-
+                _tryProcessCommand(cmd, args);
             }
             else{
                 Logger::LogStr(_timeService->TimeAct, this, "Invalid cmd: '" + String(cmd) + "'");
@@ -54,8 +55,26 @@ private:
         Logger::Log(_timeService->TimeAct, this, failText);
     }
 
-    void _tryProcessCommand(Command cmd){
-        
+    void _tryProcessCommand(Command cmd, String args){
+        switch (cmd){
+            case SETTIME:
+                /* code */
+                break;
+            
+            default:
+                break;
+        }
+    }
+
+    void _setDateTime(String arg){
+        uint8_t h = _splitString(arg, ':', 0).toInt();
+        uint8_t m = _splitString(arg, ':', 0).toInt();
+        uint8_t s = _splitString(arg, ':', 0).toInt();
+        uint8_t d = _splitString(arg, ':', 0).toInt();
+        uint8_t MM = _splitString(arg, ':', 0).toInt();
+        uint8_t y = _splitString(arg, ':', 0).toInt();
+        _timeService->TimeAct->SetTime(h, m, s, d, MM, y);
+        Logger::LogStr(_timeService->TimeAct, this, "Time set");
     }
 
     String _splitString(String data, char separator, int index){
@@ -91,8 +110,9 @@ private:
     }
 
 public:
-    SerialService(TimeService* timeService){
+    SerialService(TimeService* timeService, IOService* ioService){
         _timeService = timeService;
+        _ioService = ioService;
         _init();
     }
 
