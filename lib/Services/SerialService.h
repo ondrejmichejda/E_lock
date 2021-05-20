@@ -1,5 +1,5 @@
 /*
-    Serial Service - Communication via com port with pc.
+    Serial Service - Communication via com port with pc and handles commands.
 */
 
 #ifndef SerialService_h
@@ -17,16 +17,15 @@ class SerialService : public BaseService, public ILoggable
 {
 private:
     TimeService* _timeService;
-    bool _newMsgFlag;
-    String _msg;
-    String _availableCmds[CMDCOUNT] = {
-        "settime",
-        "getlog"
+
+    enum Command{
+        UNDEFINED = 0,
+        SETTIME = 1,
+        GETLOG = 2
     };
     
     //! Initialization.
     void _init(){
-        _newMsgFlag = false;
         Logger::Log(_timeService->TimeAct, this, initText);
     }
 
@@ -34,15 +33,14 @@ private:
     void _work(){
         // Serial object configured in Logger static class
         if(Serial.available()){
-            
-            String msg = Serial.readString();
-            if(_validateCommand(msg)){
-                _msg = msg;
-                _newMsgFlag = true;
-                Logger::LogStr(_timeService->TimeAct, this, "New valid cmd: '" + msg + "'");
+            Command cmd = _getEnumFromCmd(Serial.readString());
+            if(cmd != UNDEFINED){
+                Logger::LogStr(_timeService->TimeAct, this, "New valid cmd: '" + String(cmd) + "'");
+                //_tryProcessCommand(msg);
+
             }
             else{
-                Logger::LogStr(_timeService->TimeAct, this, "Invalid cmd: '" + msg + "'");
+                Logger::LogStr(_timeService->TimeAct, this, "Invalid cmd: '" + String(cmd) + "'");
             }
             
         }
@@ -53,14 +51,22 @@ private:
         Logger::Log(_timeService->TimeAct, this, failText);
     }
 
-    bool _validateCommand(String cmd){
-        bool result = false;
-        for (size_t i = 0; i < CMDCOUNT; i++)
+    void _tryProcessCommand(Command cmd){
+        
+    }
+
+    Command _getEnumFromCmd(String cmd){
+        Command result = UNDEFINED;
+        switch (cmd.toInt())
         {
-            if(cmd == _availableCmds[i]){
-                result = true;
-                break;
-            }
+        case 1:
+            result = SETTIME;
+            break;
+        case 2:
+            result = GETLOG;
+        default:
+            result = UNDEFINED;
+            break;
         }
         return result;
     }
@@ -73,17 +79,6 @@ public:
 
     String GetLogName(){
         return "Serial Service";
-    }
-
-    bool NewData(){
-        return _newMsgFlag;
-    }
-
-    String GetData(){
-        _newMsgFlag = false;
-        String result = _msg;
-        _msg = "";
-        return result;
     }
 };
 
