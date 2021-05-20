@@ -33,9 +33,12 @@ private:
     void _work(){
         // Serial object configured in Logger static class
         if(Serial.available()){
-            Command cmd = _getEnumFromCmd(Serial.readString());
+            String message = Serial.readString();
+            Command cmd = _getEnumFromCmd(_splitString(message, ';', 0));
+            String args = _splitString(message, ';', 1);
             if(cmd != UNDEFINED){
                 Logger::LogStr(_timeService->TimeAct, this, "New valid cmd: '" + String(cmd) + "'");
+                Logger::LogStr(_timeService->TimeAct, this, "Args: '" + args + "'");
                 //_tryProcessCommand(msg);
 
             }
@@ -53,6 +56,22 @@ private:
 
     void _tryProcessCommand(Command cmd){
         
+    }
+
+    String _splitString(String data, char separator, int index){
+        int found = 0;
+        int strIndex[] = {0, -1};
+        int maxIndex = data.length()-1;
+
+        for(int i=0; i<=maxIndex && found<=index; i++){
+            if(data.charAt(i)==separator || i==maxIndex){
+                found++;
+                strIndex[0] = strIndex[1]+1;
+                strIndex[1] = (i == maxIndex) ? i+1 : i;
+            }
+    }
+
+    return found>index ? data.substring(strIndex[0], strIndex[1]) : "";
     }
 
     Command _getEnumFromCmd(String cmd){
