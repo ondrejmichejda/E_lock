@@ -8,6 +8,7 @@
 #include "IOService.h"
 #include "TimeService.h"
 #include "AuthService.h"
+#include "SerialService.h"
 
 class Core {
 
@@ -15,6 +16,7 @@ private:
     TimeService* timeService;
     IOService* ioService;
     AuthService* authService;
+    SerialService* serialService;
 
 public:
 
@@ -32,6 +34,9 @@ public:
         // Authentication Service
         authService = new AuthService(timeService, ioService);
 
+        // Serial Service
+        serialService = new SerialService(timeService);
+
         char startText[] = "E-lock started";
         Logger::Log(timeService->TimeAct, NULL, startText);
     }   
@@ -41,6 +46,7 @@ public:
         timeService->Run();
         ioService->Run();
         authService->Run();
+        serialService->Run();
     } 
 };
 
