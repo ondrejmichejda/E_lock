@@ -215,10 +215,12 @@ public:
 
         _pwdModeTimeout = new TOn(PASSWORD_TIMEOUT);
         _editModeTimeout = new TOn(EDIT_TIMEOUT);
+
+        _init();
     }
 
     String GetLogName(){
-        return Name;
+        return "Setup Service";
     }
 };
 

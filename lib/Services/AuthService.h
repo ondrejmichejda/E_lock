@@ -33,7 +33,7 @@ private:
             // !!! TO DO: Some variation to Dictionary with user names!!! 
             // code = code.substring(0, 10);
             if(_verifyUser(code)){
-                Logger::LogStr(_timeService->TimeAct, this, "OK " + code);
+                Logger::LogStr(_timeService->TimeAct, this, "OK > Unlocking " + code);
                 _ioService->Led->Green();
                 _ioService->LockRelay->Close();
             }
@@ -67,10 +67,12 @@ public:
 
         //Set authenticated users into array _users
         _users[0] = "5448487069656868486653";
+
+        _init();
     }
 
     String GetLogName(){
-        return Name;
+        return "Auth Service";
     }
 };
 

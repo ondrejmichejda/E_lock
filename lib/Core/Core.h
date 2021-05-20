@@ -25,18 +25,12 @@ public:
 
         // Time Service
         timeService = new TimeService();
-        char timeName[] = "Time";
-        timeService->Setup(timeName);
 
         // IO Service
         ioService = new IOService(timeService);
-        char ioName[] = "IO";
-        ioService->Setup(ioName);
 
         // Authentication Service
         authService = new AuthService(timeService, ioService);
-        char authName[] = "Auth";
-        authService->Setup(authName);
 
         char startText[] = "E-lock started";
         Logger::Log(timeService->TimeAct, NULL, startText);
@@ -47,8 +41,6 @@ public:
         timeService->Run();
         ioService->Run();
         authService->Run();
-
-        Logger::Run();
     } 
 };
 

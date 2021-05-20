@@ -34,13 +34,15 @@ public:
     //!
     TimeService(){
         TimeAct = NULL;
+
+        _init();
     }
 
     //! Get Name
     //! @return Name of this loggable object.
     //!
     String GetLogName(){
-        return Name;
+        return "Time Service";
     }
 };
 

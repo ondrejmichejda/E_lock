@@ -22,14 +22,6 @@ public:
         }
     }
 
-    static void Run(){
-        if(Serial.available()){
-            String rec = Serial.readString();
-            delay(500);
-            LogStr(NULL, NULL, rec + "_mark");
-        }
-    }
-
     static void Log(RTC* rtc, ILoggable* object, char msg1[50]){
         String timeStr = (rtc == NULL) ? "null time" : rtc->GetTimeStr();
         String objectStr = (object == NULL) ? "null object" : object->GetLogName();

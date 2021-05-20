@@ -38,21 +38,10 @@ protected:
 
 public:
 
-	//! Name of service.
-	char Name[20];
-
 	//! Main task run in loop.
 	void Run(){
 		_work();
 		_statusCheck();
-	}
-
-	//! Fake constructor used in SETUP function in main.cpp.
-	//! @param name Name of this service.
-	//!
-	void Setup(char name[20]){
-		strcpy(Name, name);
-		_init();
 	}
 
     //! Returns status of this service.

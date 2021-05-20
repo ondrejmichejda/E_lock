@@ -31,8 +31,20 @@ private:
     void _work(){
         Reader->Run();
         Led->Run();
-        LockRelay->Run();
         
+        if(LockRelay->Opened()){
+            char openedTxt[] = "LockRelay opened (Locked)";
+            Logger::Log(_timeService->TimeAct, this, openedTxt);
+        }
+            
+
+        if(LockRelay->Closed()){
+            char closedTxt[] = "LockRelay closed (Unlocked)";
+            Logger::Log(_timeService->TimeAct, this, closedTxt);
+        }
+
+        LockRelay->Run();
+
         if(_timeService->TimeAct->Changed())
             Display1->ShowTime(_timeService->TimeAct);
     }
@@ -55,6 +67,11 @@ public:
     //Relay for lock control
     Relay* LockRelay;
 
+    Key* Key1;
+    Key* Key2;
+    Key* Key3;
+    Key* Key4;
+
     //! Initializes IOService.
     //! @param timeService Reference to TimeService.
     //!
@@ -63,10 +80,12 @@ public:
         Display1 = NULL;
         Reader = NULL;
         Led = NULL;
+
+        _init();
     }
 
     String GetLogName(){
-        return Name;
+        return "IO Service";
     }
 };
 
