@@ -1,5 +1,5 @@
 /*
-    Serial Service - Communication via com port with pc.
+    Communication Service - Communication via com port with pc.
 */
 
 #ifndef SerialService_h
@@ -10,8 +10,6 @@
 #include "TimeService.h"
 #include "Logger.h"
 
-#define CMDCOUNT 2
-
 
 class SerialService : public BaseService, public ILoggable
 {
@@ -19,10 +17,6 @@ private:
     TimeService* _timeService;
     bool _newMsgFlag;
     String _msg;
-    String _availableCmds[CMDCOUNT] = {
-        "settime",
-        "getlog"
-    };
     
     //! Initialization.
     void _init(){
@@ -34,35 +28,14 @@ private:
     void _work(){
         // Serial object configured in Logger static class
         if(Serial.available()){
-            
-            String msg = Serial.readString();
-            if(_validateCommand(msg)){
-                _msg = msg;
-                _newMsgFlag = true;
-                Logger::LogStr(_timeService->TimeAct, this, "New valid cmd: '" + msg + "'");
-            }
-            else{
-                Logger::LogStr(_timeService->TimeAct, this, "Invalid cmd: '" + msg + "'");
-            }
-            
+            _newMsgFlag = true;
+            _msg = Serial.readString();
         }
     }
 
     //! Failed.
     void _failed(){
         Logger::Log(_timeService->TimeAct, this, failText);
-    }
-
-    bool _validateCommand(String cmd){
-        bool result = false;
-        for (size_t i = 0; i < CMDCOUNT; i++)
-        {
-            if(cmd == _availableCmds[i]){
-                result = true;
-                break;
-            }
-        }
-        return result;
     }
 
 public:
