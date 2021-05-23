@@ -12,7 +12,7 @@
 #include "Logger.h"
 
 #define CMDCOUNT 2
-
+#define COMMPWD 139
 
 class SerialService : public BaseService, public ILoggable
 {
@@ -36,17 +36,28 @@ private:
         // Serial object configured in Logger static class
         if(Serial.available()){
             String message = Serial.readString();
-            Command cmd = _getEnumFromCmd(_splitString(message, ';', 0));
-            String args = _splitString(message, ';', 1);
-            if(cmd != UNDEFINED){
-                Logger::LogStr(_timeService->TimeAct, this, "New valid cmd: '" + String(cmd) + "'");
-                Logger::LogStr(_timeService->TimeAct, this, "Args: '" + args + "'");
-                _tryProcessCommand(cmd, args);
+            uint8_t pwd = _splitString(message, ';', 0).toInt();
+
+            if(!_handshake(pwd)){
+                // Wrong password for communication from PC
+                Logger::LogStr(_timeService->TimeAct, this, "Invalid handshake. Aborted");
             }
             else{
-                Logger::LogStr(_timeService->TimeAct, this, "Invalid cmd: '" + String(cmd) + "'");
+                Command cmd = _getEnumFromCmd(_splitString(message, ';', 1));
+
+                if(cmd == UNDEFINED){
+                    // Invalid command
+                    Logger::LogStr(_timeService->TimeAct, this, "Invalid cmd: '" + String(cmd) + "'");
+                }
+                else{
+                    // All checks passed, trying to process command
+                    String args = _splitString(message, ';', 2);
+                    Logger::LogStr(_timeService->TimeAct, this, "New valid cmd: '" + String(cmd) + "'");
+                    Logger::LogStr(_timeService->TimeAct, this, "Args: '" + args + "'");
+                    _tryProcessCommand(cmd, args);
+                    
+                }
             }
-            
         }
     }
 
@@ -58,7 +69,8 @@ private:
     void _tryProcessCommand(Command cmd, String args){
         switch (cmd){
             case SETTIME:
-                /* code */
+                // 1;10:43:15:5:12:2020
+                _setDateTime(args);
                 break;
             
             default:
@@ -68,11 +80,17 @@ private:
 
     void _setDateTime(String arg){
         uint8_t h = _splitString(arg, ':', 0).toInt();
-        uint8_t m = _splitString(arg, ':', 0).toInt();
-        uint8_t s = _splitString(arg, ':', 0).toInt();
-        uint8_t d = _splitString(arg, ':', 0).toInt();
-        uint8_t MM = _splitString(arg, ':', 0).toInt();
-        uint8_t y = _splitString(arg, ':', 0).toInt();
+        uint8_t m = _splitString(arg, ':', 1).toInt();
+        uint8_t s = _splitString(arg, ':', 2).toInt();
+        uint8_t d = _splitString(arg, ':', 3).toInt();
+        uint8_t MM = _splitString(arg, ':', 4).toInt();
+        uint16_t y = _splitString(arg, ':', 5).toInt();
+        
+        if(y < 2021){
+            Logger::LogStr(_timeService->TimeAct, this, "Invalid year. Aborted");
+            return;
+        }
+
         _timeService->TimeAct->SetTime(h, m, s, d, MM, y);
         Logger::LogStr(_timeService->TimeAct, this, "Time set");
     }
@@ -88,9 +106,13 @@ private:
                 strIndex[0] = strIndex[1]+1;
                 strIndex[1] = (i == maxIndex) ? i+1 : i;
             }
+        }
+
+        return found>index ? data.substring(strIndex[0], strIndex[1]) : "";
     }
 
-    return found>index ? data.substring(strIndex[0], strIndex[1]) : "";
+    bool _handshake(uint8_t in){
+        return COMMPWD == in;
     }
 
     Command _getEnumFromCmd(String cmd){

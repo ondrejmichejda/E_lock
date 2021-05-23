@@ -19,10 +19,10 @@ private:
 
     //! Initialization.
     void _init(){
-        LockRelay = new Relay(1);
+        LockRelay = new Relay(7);
         Display1 = new Display(2, 3);
         Reader = new CardReader125(8);
-        Led = new RGBLED(9, 10, 11);
+        Led = new RGBLED(5, 6, 4);
         
         Logger::Log(_timeService->TimeAct, this, initText);
     }

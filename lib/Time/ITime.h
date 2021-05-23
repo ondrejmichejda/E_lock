@@ -40,7 +40,7 @@ public:
     //! @param h Hours to set
     //! @param m Minutes to set
     //! @param s Seconds to set
-    virtual void SetTime(uint8_t h, uint8_t m, uint8_t s, uint8_t d, uint8_t MM, uint8_t y) = 0;
+    virtual void SetTime(uint8_t h, uint8_t m, uint8_t s, uint8_t d, uint8_t MM, uint16_t y) = 0;
 };
 
 #endif

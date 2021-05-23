@@ -7,33 +7,42 @@
 #include "ITime.h"
 #include "Wire.h"
 #include "RTCLib.h"
+#include "Logger.h"
+#include "ILoggable.h"
 
-
-class RTC : public ITime
+class RTC : public ITime, public ILoggable
 {
 private:
-    RTC_DS3231* _rtc;
+    RTC_DS1307* _rtc;
     uint8_t _minOld;
 public:
 	//! Initializes Time object
 	RTC(){
         _minOld = 0;
-        _rtc = new RTC_DS3231();
-        if (! _rtc->begin()) {
-            // Serial.println("Couldn't find RTC");
-            Serial.flush();
-            abort();
+        _rtc = new RTC_DS1307();
+        if(!_rtc->begin()) {
+            Serial.println("No RTC found");
+            while(1);
+        }
+
+        if(!_rtc->isrunning()){
+            Serial.println("RTC is not running");
         }
         
-        if (_rtc->lostPower()) {
-            Serial.println("RTC lost power, let's set the time!");
-            // When time needs to be set on a new device, or after a power loss, the
-            // following line sets the RTC to the date & time this sketch was compiled
-            _rtc->adjust(DateTime(F(__DATE__), F(__TIME__)));
-            // This line sets the RTC with an explicit date & time, for example to set
-            // January 21, 2014 at 3am you would call:
-            // rtc.adjust(DateTime(2014, 1, 21, 3, 0, 0));
-        }
+        // if(_rtc->lostPower()) {
+        //     Serial.println("RTC lost power, let's set the time!");
+        //     // When time needs to be set on a new device, or after a power loss, the
+        //     // following line sets the RTC to the date & time this sketch was compiled
+        //     _rtc->adjust(DateTime(F(__DATE__), F(__TIME__)));
+        //     // This line sets the RTC with an explicit date & time, for example to set
+        //     // January 21, 2014 at 3am you would call:
+        //     // rtc.adjust(DateTime(2014, 1, 21, 3, 0, 0));
+        // }
+        _rtc->adjust(DateTime(F(__DATE__), F(__TIME__)));
+    }
+
+    String GetLogName(){
+        return "RTC";
     }
 
     //! Returns datetime of actual rtc.
@@ -93,8 +102,7 @@ public:
     //! @param h Hours to set
     //! @param m Minutes to set
     //! @param s Seconds to set
-    void SetTime(uint8_t h, uint8_t m, uint8_t s, uint8_t d, uint8_t MM, uint8_t y){
-        DateTime n = _rtc->now();
+    void SetTime(uint8_t h, uint8_t m, uint8_t s, uint8_t d, uint8_t MM, uint16_t y){
         _rtc->adjust(DateTime(y, MM, d, h, m, s));
     }
 };
