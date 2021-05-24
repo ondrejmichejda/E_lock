@@ -84,6 +84,13 @@ public:
         _init();
     }
 
+    // Unlock with led signalization
+    void Unlock(){
+        Logger::LogStr(_timeService->TimeAct, this, "Unlocking");
+        Led->Green();
+        LockRelay->Close();
+    }
+
     String GetLogName(){
         return "IO Service";
     }

@@ -33,9 +33,8 @@ private:
             // !!! TO DO: Some variation to Dictionary with user names!!! 
             // code = code.substring(0, 10);
             if(_verifyUser(code)){
-                Logger::LogStr(_timeService->TimeAct, this, "OK > Unlocking " + code);
-                _ioService->Led->Green();
-                _ioService->LockRelay->Close();
+                Logger::LogStr(_timeService->TimeAct, this, "OK > " + code);
+                _ioService->Unlock();
             }
             else {
                 Logger::LogStr(_timeService->TimeAct, this, "Failed " + code);
