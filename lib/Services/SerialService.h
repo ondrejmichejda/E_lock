@@ -114,6 +114,7 @@ private:
             break;
         case 9:
             result = GETLOG;
+            break;
         default:
             result = UNDEFINED;
             break;
