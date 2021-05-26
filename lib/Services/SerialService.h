@@ -5,11 +5,7 @@
 #ifndef SerialService_h
 #define SerialService_h
 
-#include "Arduino.h"
-#include "BaseService.h"
-#include "TimeService.h"
 #include "IOService.h"
-#include "Logger.h"
 
 #define COMMPWD 139
 

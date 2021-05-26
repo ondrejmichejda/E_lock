@@ -1,11 +1,7 @@
 #ifndef SetupService_h
 #define SetupService_h
 
-#include "Arduino.h"
-#include "BaseService.h"
 #include "TimeService.h"
-#include "Logger.h"
-#include "IOService.h"
 #include "SerialService.h"
 
 // Class to handle time and other settings.

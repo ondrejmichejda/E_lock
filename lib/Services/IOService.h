@@ -1,10 +1,7 @@
 #ifndef IOService_h
 #define IOService_h
 
-#include "Arduino.h"
-#include "BaseService.h"
 #include "TimeService.h"
-#include "Logger.h"
 #include "Key.h"
 #include "Display.h"
 #include "CardReader125.h"

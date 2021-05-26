@@ -1,10 +1,7 @@
 #ifndef TimeService_h
 #define TimeService_h
 
-#include "Arduino.h"
 #include "BaseService.h"
-#include "ILoggable.h"
-#include "Logger.h"
 #include "RTC.h"
 
 //! Class covering Time services.

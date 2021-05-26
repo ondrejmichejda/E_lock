@@ -6,10 +6,7 @@
 #define AuthService_h
 
 #include "Arduino.h"
-#include "BaseService.h"
-#include "TimeService.h"
 #include "IOService.h"
-#include "Logger.h"
 
 #define USER_COUNT 2
 

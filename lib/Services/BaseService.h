@@ -2,10 +2,10 @@
   BaseService.h - Base abstract class for services.
 */
 
+#include "Logger.h"
+
 #ifndef BaseService_h
 #define BaseService_h
-
-#include "Arduino.h"
 
 class BaseService
 {
@@ -28,13 +28,13 @@ protected:
     char failText[7] = "Failed";
 
 	//! Initialization of all obects, call after fail.
-	virtual void _init();
+	virtual void _init() = 0;
 
 	//! Do the work.	
-	virtual void _work();
+	virtual void _work() = 0;
 
 	//! Failed. What to do when service fails.
-	virtual void _failed();
+	virtual void _failed() = 0;
 
 public:
 
