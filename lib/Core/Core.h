@@ -38,10 +38,10 @@ public:
         ioService = new IOService(timeService);
 
         // Authentication Service
-        authService = new AuthService(timeService, ioService);
+        authService = new AuthService(timeService, ioService, storageService);
 
         // Serial Service
-        serialService = new SerialService(timeService, ioService);
+        serialService = new SerialService(timeService, ioService, authService);
 
         char startText[] = "E-lock started";
         Logger::Log(timeService->TimeAct, NULL, startText);

@@ -6,6 +6,7 @@
 #define SerialService_h
 
 #include "IOService.h"
+#include "AuthService.h"
 
 #define COMMPWD 139
 
@@ -14,6 +15,7 @@ class SerialService : public BaseService, public ILoggable
 private:
     TimeService* _timeService;
     IOService* _ioService;
+    AuthService* _authService;
 
     // Command definition
     enum Command{
@@ -21,6 +23,7 @@ private:
         SETTIME = 1,
         UNLOCK = 2,
         LEDTEST = 3,
+        ADDUSER = 4,
         GETLOG = 9
     };
     
@@ -108,6 +111,9 @@ private:
         case 3:
             result = LEDTEST;
             break;
+        case 4:
+            result = ADDUSER;
+            break;
         case 9:
             result = GETLOG;
             break;
@@ -139,6 +145,9 @@ private:
                 else if(args == "b")
                     _ioService->Led->Blue();
                 break;
+            case ADDUSER:
+                _authService->AddUserMode = true;
+                break;
             default:
                 break;
         }
@@ -164,9 +173,10 @@ private:
     }
 
 public:
-    SerialService(TimeService* timeService, IOService* ioService){
+    SerialService(TimeService* timeService, IOService* ioService, AuthService* authService){
         _timeService = timeService;
         _ioService = ioService;
+        _authService = authService;
         _init();
     }
 

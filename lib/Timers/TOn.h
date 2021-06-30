@@ -25,7 +25,7 @@ public:
     int Elapsed;
 
     //! Initialize timer on class.
-    //! @param t Preset time after which Out is set.
+    //! @param t Preset time after which Out is set in ms.
 	TOn(long t){
         _time = t;
         _oldMs = 0;

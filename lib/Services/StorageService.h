@@ -11,6 +11,7 @@
 #define sd_CS_pin 53                
 #define LOGFILE "log.txt"
 #define USERFILE "users.txt"
+#define DELIMITER ";"
 
 class StorageService : public BaseService, ILoggable{
 
@@ -28,11 +29,6 @@ private:
             while(1);
         }
         _sdOk = true;
-
-        AddUser("123");
-        AddUser("45+6");
-        VerifyUser();
-        CreateLog("ähoj");
 
         Logger::Log(_timeService->TimeAct, this, initText);
     }
@@ -63,22 +59,27 @@ public:
         }
     }
 
-    bool VerifyUser(){
+    String GetUsers(){
         File f = SD.open(USERFILE, FILE_READ);
+        String stream;
         while(f.available()){
-            Serial.write(f.read());
-            //Logger::LogStr(_timeService->TimeAct, this, String(f.read()));
+            stream += char(f.read());
         }
-        return true;
+        return stream;
     }
 
-    void AddUser(String cardCode){
+    bool AddUser(String cardCode){
         File f = SD.open(USERFILE, FILE_WRITE);
 
         //if file succesfuly open (created), do write
         if (f) {
-            f.println(cardCode);
+            f.print(cardCode);
+            f.print(DELIMITER);
             f.close();
+            return true;
+        }
+        else{
+            return false;
         }
     }
 
