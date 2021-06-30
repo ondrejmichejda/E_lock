@@ -13,21 +13,21 @@
 class RTC : public ITime, public ILoggable
 {
 private:
-    RTC_DS1307* _rtc;
+    RTC_DS3231* _rtc;
     uint8_t _minOld;
 public:
 	//! Initializes Time object
 	RTC(){
         _minOld = 0;
-        _rtc = new RTC_DS1307();
+        _rtc = new RTC_DS3231();
         if(!_rtc->begin()) {
             Serial.println("No RTC found");
             while(1);
         }
 
-        if(!_rtc->isrunning()){
-            Serial.println("RTC is not running");
-        }
+        // if(!_rtc->isrunning()){
+        //     Serial.println("RTC is not running");
+        // }
         
         // if(_rtc->lostPower()) {
         //     Serial.println("RTC lost power, let's set the time!");

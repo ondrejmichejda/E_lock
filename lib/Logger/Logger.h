@@ -11,6 +11,8 @@
 #define SEPARATOR ';'
 
 class Logger{
+private:
+    
 public:
     //! Start serial communication.
     //! @param baud Baudrate.
