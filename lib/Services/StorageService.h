@@ -8,7 +8,7 @@
 #include "SPI.h"
 #include "SD.h"
 
-#define sd_CS_pin 10                //Hard defined communication pin, pin is on shield module
+#define sd_CS_pin 53                
 #define LOGFILE "log.txt"
 #define USERFILE "users.txt"
 
@@ -20,7 +20,7 @@ private:
 
     //! Initialization.
     void _init(){
-        //pinMode(sd_CS_pin, OUTPUT);
+        pinMode(sd_CS_pin, OUTPUT);
         //check sd card connection
         if (!SD.begin(sd_CS_pin)) {
             char failSD[] = "Missing or malfunction of SD card.";

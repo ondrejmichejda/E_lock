@@ -32,7 +32,7 @@ public:
         timeService = new TimeService();
 
         // Storage Service
-        //storageService = new StorageService(timeService);
+        storageService = new StorageService(timeService);
 
         // IO Service
         ioService = new IOService(timeService);
@@ -50,7 +50,7 @@ public:
     // Do the work of Core class.
     void Run(){
         timeService->Run();
-        // storageService->Run();
+        storageService->Run();
         ioService->Run();
         authService->Run();
         serialService->Run();
