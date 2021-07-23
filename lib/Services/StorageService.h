@@ -62,16 +62,28 @@ public:
         }
     }
 
-    String GetUsers(){
+    
+    bool IsUserInList(String cardCode){
         File f = SD.open(USERFILE, FILE_READ);
         String stream;
         while(f.available()){
             stream += char(f.read());
         }
-        return stream;
+        if (stream.indexOf(cardCode) > -1){
+            //user is in list
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     bool AddUser(String cardCode){
+        if (IsUserInList(cardCode)){
+            Log(_timeService->TimeAct, this, "User already added.");
+            return false;
+        }
+        
         File f = SD.open(USERFILE, FILE_WRITE);
 
         //if file succesfuly open (created), do write

@@ -35,8 +35,10 @@ private:
             if(AddUserMode){
                 if(_storageService->AddUser(code)){
                     _storageService->Log(_timeService->TimeAct, this, "New user added: " + code);
-                    AddUserMode = false;
+                    
                 }
+                AddUserMode = false;
+                _addUserTimer->In = false;
             }
             else{
                 if(_verifyUser(code)){
@@ -58,6 +60,7 @@ private:
 
         if(_addUserTimer->Out && AddUserMode){
             AddUserMode = false;
+            _addUserTimer->In = false;
             _storageService->Log(_timeService->TimeAct, this, "Time for adding user passed.");
         }
         _addUserMode_old = AddUserMode;
