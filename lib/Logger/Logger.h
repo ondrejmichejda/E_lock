@@ -24,7 +24,7 @@ public:
         }
     }
 
-    static void Log(RTC* rtc, ILoggable* object, char msg1[50]){
+    static void Log_(RTC* rtc, ILoggable* object, char msg1[50]){
         String timeStr = (rtc == NULL) ? "null time" : rtc->GetTimeStr();
         String objectStr = (object == NULL) ? "null object" : object->GetLogName();
         Serial.print(timeStr);
@@ -35,23 +35,24 @@ public:
         Serial.println();
     }
 
-    static void LogStr(RTC* rtc, ILoggable* object, String msg1){
+    static String LogStr_(RTC* rtc, ILoggable* object, String msg1){
         String timeStr = (rtc == NULL) ? "null time" : rtc->GetTimeStr();
         String objectStr = (object == NULL) ? "null object" : object->GetLogName();
-        Serial.print(timeStr);
-        Serial.print(SEPARATOR);
-        Serial.print(objectStr);
-        Serial.print(SEPARATOR); 
-        Serial.print(msg1); 
-        Serial.println();
+        // Serial.print(timeStr);
+        // Serial.print(SEPARATOR);
+        // Serial.print(objectStr);
+        // Serial.print(SEPARATOR); 
+        // Serial.print(msg1); 
+        Serial.println(timeStr + String(SEPARATOR) + objectStr + String(SEPARATOR) + msg1);
+        return timeStr + String(SEPARATOR) + objectStr + String(SEPARATOR) + msg1;
     }
 
-    static void Log(ILoggable* object, char msg1[50]){
-        Log(NULL, object, msg1);
+    static void Log_(ILoggable* object, char msg1[50]){
+        Log_(NULL, object, msg1);
     }
 
-    static void Log(char msg1[50]){
-        Log(NULL, NULL, msg1);
+    static void Log_(char msg1[50]){
+        Log_(NULL, NULL, msg1);
     }
 };
 #endif

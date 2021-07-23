@@ -2,6 +2,7 @@
 #define IOService_h
 
 #include "TimeService.h"
+#include "StorageService.h"
 #include "Key.h"
 #include "Display.h"
 #include "CardReader125.h"
@@ -13,6 +14,7 @@ class IOService : public BaseService, public ILoggable
 {
 private:
     TimeService* _timeService = NULL;
+    StorageService* _storageService = NULL;
 
     //! Initialization.
     void _init(){
@@ -21,7 +23,7 @@ private:
         Reader = new CardReader125(10);
         Led = new RGBLED(5, 6, 4);
         
-        Logger::Log(_timeService->TimeAct, this, initText);
+        _storageService->Log(_timeService->TimeAct, this, initText);
     }
 
     //! Work to be done.
@@ -30,14 +32,12 @@ private:
         Led->Run();
         
         if(LockRelay->Opened()){
-            char openedTxt[] = "LockRelay opened (Locked)";
-            Logger::Log(_timeService->TimeAct, this, openedTxt);
+            _storageService->Log(_timeService->TimeAct, this, "LockRelay opened (Locked)");
         }
             
 
         if(LockRelay->Closed()){
-            char closedTxt[] = "LockRelay closed (Unlocked)";
-            Logger::Log(_timeService->TimeAct, this, closedTxt);
+            _storageService->Log(_timeService->TimeAct, this, "LockRelay closed (Unlocked)");
         }
 
         LockRelay->Run();
@@ -48,7 +48,7 @@ private:
 
     //! Failed.
     void _failed(){
-        Logger::Log(_timeService->TimeAct, this, failText);
+        _storageService->Log(_timeService->TimeAct, this, failText);
     }
 
 public:
@@ -72,8 +72,9 @@ public:
     //! Initializes IOService.
     //! @param timeService Reference to TimeService.
     //!
-    IOService(TimeService* timeService){
+    IOService(StorageService* storageService, TimeService* timeService){
         _timeService = timeService;
+        _storageService = storageService;
         Display1 = NULL;
         Reader = NULL;
         Led = NULL;
@@ -83,7 +84,7 @@ public:
 
     // Unlock with led signalization
     void Unlock(){
-        Logger::LogStr(_timeService->TimeAct, this, "Unlocking");
+        _storageService->Log(_timeService->TimeAct, this, "Unlocking");
         Led->Green();
         LockRelay->Close();
     }

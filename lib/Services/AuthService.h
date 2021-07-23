@@ -24,7 +24,7 @@ private:
 
     //! Initialization.
     void _init(){
-        Logger::Log(_timeService->TimeAct, this, initText);
+        _storageService->Log(_timeService->TimeAct, this, initText);
     }
 
     //! Work to be done.
@@ -34,17 +34,17 @@ private:
 
             if(AddUserMode){
                 if(_storageService->AddUser(code)){
-                    Logger::LogStr(_timeService->TimeAct, this, "New user added: " + code);
+                    _storageService->Log(_timeService->TimeAct, this, "New user added: " + code);
                     AddUserMode = false;
                 }
             }
             else{
                 if(_verifyUser(code)){
-                    Logger::LogStr(_timeService->TimeAct, this, "OK > " + code);
+                    _storageService->Log(_timeService->TimeAct, this, "OK > " + code);
                     _ioService->Unlock();
                 }
                 else {
-                    Logger::LogStr(_timeService->TimeAct, this, "Failed " + code);
+                    _storageService->Log(_timeService->TimeAct, this, "Failed " + code);
                     _ioService->Led->Red();
                 }
             }
@@ -52,13 +52,13 @@ private:
         }
 
         if(AddUserMode && !_addUserMode_old){
-            Logger::LogStr(_timeService->TimeAct, this, "Ready to add new user");
+            _storageService->Log(_timeService->TimeAct, this, "Ready to add new user");
             _addUserTimer->In = true;
         }
 
         if(_addUserTimer->Out && AddUserMode){
             AddUserMode = false;
-            Logger::LogStr(_timeService->TimeAct, this, "Time for adding user passed.");
+            _storageService->Log(_timeService->TimeAct, this, "Time for adding user passed.");
         }
         _addUserMode_old = AddUserMode;
         _addUserTimer->Run();
@@ -66,7 +66,7 @@ private:
 
     //! Failed.
     void _failed(){
-        Logger::Log(_timeService->TimeAct, this, failText);
+        _storageService->Log(_timeService->TimeAct, this, failText);
     }
 
     bool _verifyUser(String code){

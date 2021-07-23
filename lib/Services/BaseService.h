@@ -24,8 +24,8 @@ private:
 
 protected:
 	
-    char initText[12] = "Initialized";
-    char failText[7] = "Failed";
+    String initText = "Initialized";
+    String failText = "Failed";
 
 	//! Initialization of all obects, call after fail.
 	virtual void _init() = 0;

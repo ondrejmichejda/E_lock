@@ -7,6 +7,7 @@
 
 #include "IOService.h"
 #include "AuthService.h"
+#include "StorageService.h"
 
 #define COMMPWD 139
 
@@ -16,6 +17,7 @@ private:
     TimeService* _timeService;
     IOService* _ioService;
     AuthService* _authService;
+    StorageService* _storageService;
 
     // Command definition
     enum Command{
@@ -29,7 +31,7 @@ private:
     
     //! Initialization.
     void _init(){
-        Logger::Log(_timeService->TimeAct, this, initText);
+        _storageService->Log(_timeService->TimeAct, this, initText);
     }
 
     //! Work to be done.
@@ -41,22 +43,21 @@ private:
 
             if(!_handshake(pwd)){
                 // Wrong password for communication from PC
-                Logger::LogStr(_timeService->TimeAct, this, "Invalid handshake. Aborted");
+                _storageService->Log(_timeService->TimeAct, this, "Invalid handshake. Aborted");
             }
             else{
                 Command cmd = _getEnumFromCmd(_splitString(message, ';', 1));
 
                 if(cmd == UNDEFINED){
                     // Invalid command
-                    Logger::LogStr(_timeService->TimeAct, this, "Invalid cmd: '" + String(cmd) + "'");
+                    _storageService->Log(_timeService->TimeAct, this, "Invalid cmd: '" + String(cmd) + "'");
                 }
                 else{
                     // All checks passed, trying to process command
                     String args = _splitString(message, ';', 2);
-                    Logger::LogStr(_timeService->TimeAct, this, "New valid cmd: '" + String(cmd) + "'");
-                    Logger::LogStr(_timeService->TimeAct, this, "Args: '" + args + "'");
+                    _storageService->Log(_timeService->TimeAct, this, "New valid cmd: '" + String(cmd) + "'");
+                    _storageService->Log(_timeService->TimeAct, this, "Args: '" + args + "'");
                     _tryProcessCommand(cmd, args);
-                    
                 }
             }
         }
@@ -64,7 +65,7 @@ private:
 
     //! Failed.
     void _failed(){
-        Logger::Log(_timeService->TimeAct, this, failText);
+        _storageService->Log(_timeService->TimeAct, this, failText);
     }
 
     //! String split function
@@ -164,16 +165,17 @@ private:
         uint16_t y = _splitString(arg, ':', 5).toInt();
 
         if(y < 2021){
-            Logger::LogStr(_timeService->TimeAct, this, "Invalid year. Aborted");
+            _storageService->Log(_timeService->TimeAct, this, "Invalid year. Aborted");
             return;
         }
 
         _timeService->TimeAct->SetTime(h, m, s, d, MM, y);
-        Logger::LogStr(_timeService->TimeAct, this, "Time set");
+        _storageService->Log(_timeService->TimeAct, this, "Time set");
     }
 
 public:
-    SerialService(TimeService* timeService, IOService* ioService, AuthService* authService){
+    SerialService(StorageService* storageService, TimeService* timeService, IOService* ioService, AuthService* authService){
+        _storageService = storageService;
         _timeService = timeService;
         _ioService = ioService;
         _authService = authService;

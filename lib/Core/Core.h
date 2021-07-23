@@ -25,26 +25,23 @@ public:
 
     // Initializes core class.
     Core(){
-        // Static classes init
-        Logger::Setup(9600);
 
         // Time Service
         timeService = new TimeService();
 
         // Storage Service
         storageService = new StorageService(timeService);
-
+        
         // IO Service
-        ioService = new IOService(timeService);
+        ioService = new IOService(storageService, timeService);
 
         // Authentication Service
         authService = new AuthService(timeService, ioService, storageService);
 
         // Serial Service
-        serialService = new SerialService(timeService, ioService, authService);
-
-        char startText[] = "E-lock started";
-        Logger::Log(timeService->TimeAct, NULL, startText);
+        serialService = new SerialService(storageService, timeService, ioService, authService);
+        
+        storageService->Log(timeService->TimeAct, NULL, "E-lock started");
     }   
 
     // Do the work of Core class.

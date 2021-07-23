@@ -12,14 +12,12 @@ private:
     //! Initialization.
     void _init(){
         TimeAct = new RTC();
-        Logger::Log(TimeAct, this, initText);
     }
 
     //! Work to be done.
     void _work(){}
 
     void _failed(){
-        Logger::Log(TimeAct, this, failText);
     }
 
 public:

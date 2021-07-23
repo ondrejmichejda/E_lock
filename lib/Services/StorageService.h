@@ -21,16 +21,19 @@ private:
 
     //! Initialization.
     void _init(){
+        // Static classes init
+        Logger::Setup(9600);
+
         pinMode(sd_CS_pin, OUTPUT);
         //check sd card connection
         if (!SD.begin(sd_CS_pin)) {
             char failSD[] = "Missing or malfunction of SD card.";
-            Logger::Log(_timeService->TimeAct, this, failSD);
+            Log(_timeService->TimeAct, this, failSD);
             while(1);
         }
         _sdOk = true;
 
-        Logger::Log(_timeService->TimeAct, this, initText);
+        Log(_timeService->TimeAct, this, initText);
     }
 
     //! Work to be done.
@@ -40,7 +43,7 @@ private:
 
     //! Failed.
     void _failed(){
-        Logger::Log(_timeService->TimeAct, this, failText);
+        Log(_timeService->TimeAct, this, failText);
     }
 public:
 
@@ -49,12 +52,12 @@ public:
         _init();
     }
 
-    void CreateLog(String msg){
+    void Log(RTC* rtc, ILoggable* object, String msg){
         File f = SD.open(LOGFILE, FILE_WRITE);
-
+        String logText = Logger::LogStr_(rtc, object, msg);
         //if file succesfuly open (created), do write
         if (f) {
-            f.println(msg);
+            f.println(logText);
             f.close();
         }
     }
